@@ -1,5 +1,3 @@
-# App exemplo Frontend React
-
 ## Dependências
 
 npm install bootswatch
