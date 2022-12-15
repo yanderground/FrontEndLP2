@@ -6,6 +6,7 @@ import Card from '../components/card';
 import FormGroup from '../components/form-group';
 
 import { mensagemSucesso } from '../components/toastr';
+import '../custom.css';
 
 class CadastroFuncionario extends React.Component {
   state = {
