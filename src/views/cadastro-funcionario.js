@@ -161,13 +161,6 @@ class CadastroFuncionario extends React.Component {
                 </FormGroup>
 
                 <FormGroup label='Função: ' htmlFor='inputFunção'>
-                  
-
-                  <div>
-                    <input type="checkbox" id="gerente" name="gerente"/>
-                    <label for="gerente"> gerente</label>
-                  </div>
-
                   <div>
                     <input type="checkbox" id="funcionario" name="funcionario" />
                     <label for="funcionario"> funcionário</label>

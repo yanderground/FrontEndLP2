@@ -25,7 +25,7 @@ function Navbar(props) {
             <NavbarItem
               render='true'
               href='/cadastro-funcionario'
-              label='Usuários'
+              label='Funcionários'
             />
             <NavbarItem
               render='true'
