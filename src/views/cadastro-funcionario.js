@@ -162,8 +162,15 @@ class CadastroFuncionario extends React.Component {
 
                 <FormGroup label='Função: ' htmlFor='inputFunção'>
                   <div>
-                    <input type="checkbox" id="funcionario" name="funcionario" />
-                    <label for="funcionario"> funcionário</label>
+                    <input type="checkbox" 
+                    id="gerente"
+                    value={this.state.funcao} 
+                    className='form-control'
+                    name="gerente"
+                    onChange={(e) =>
+                      this.setState({ funcao: e.target.value})  
+                    } />
+                    <label for="gerente"> gerente</label>
                   </div>
 
                 </FormGroup>
