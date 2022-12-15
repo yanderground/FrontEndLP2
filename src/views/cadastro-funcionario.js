@@ -165,7 +165,6 @@ class CadastroFuncionario extends React.Component {
                     <input type="checkbox" 
                     id="gerente"
                     value={this.state.funcao} 
-                    className='form-control'
                     name="gerente"
                     onChange={(e) =>
                       this.setState({ funcao: e.target.value})  
