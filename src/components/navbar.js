@@ -42,6 +42,31 @@ function Navbar(props) {
               href='/cadastro-produto'
               label='Produtos'
             />
+            <NavbarItem
+              render='true'
+              href='/cadastro-cliente'
+              label='Clientes'
+            />
+            <NavbarItem
+              render='true'
+              href='/cadastro-tamanho'
+              label='Tamanhos'
+            />
+            <NavbarItem
+              render='true'
+              href='/cadastro-cor'
+              label='Cores'
+            />
+            <NavbarItem
+              render='true'
+              href='/cadastro-departamento'
+              label='Departamentos'
+            />
+            <NavbarItem
+              render='true'
+              href='/realizar-venda'
+              label='Vendas'
+            />
           </ul>
         </div>
       </div>
