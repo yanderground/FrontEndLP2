@@ -35,14 +35,14 @@ class CadastroPedido extends React.Component {
             <div className='col-lg-12'>
               <div className='bs-component'>
 
-              <FormGroup label="*Produto" htmlFor='inputProduto'>
+              <FormGroup label="Produto: " htmlFor='inputProduto'>
                   <select name="produto" id="inputproduto">
                     <option value="Camisa Nike dryfit">Camisa Nike dryfit</option>
                   </select>
                 </FormGroup>
                 <br/>
                 
-                <FormGroup label="*Tamanho" htmlFor='inputTamanho'>
+                <FormGroup label="Tamanho: " htmlFor='inputTamanho'>
                   <select name="tamanho" id="inputTamanho">
                     <option value="p">P</option>
                     <option value="m">M</option>
@@ -52,7 +52,7 @@ class CadastroPedido extends React.Component {
                 </FormGroup>
                 <br/>
 
-                <FormGroup label="*Gênero" htmlFor='inputGenero'>
+                <FormGroup label="Gênero: " htmlFor='inputGenero'>
                   <select name="genero" id="inputGenero">
                     <option value="masculino">masculino</option>
                     <option value="feminino">feminino</option>
@@ -60,7 +60,7 @@ class CadastroPedido extends React.Component {
                 </FormGroup>
                 <br/>
 
-                <FormGroup label="*Cor: " htmlFor='inputCor'>
+                <FormGroup label="Cor: " htmlFor='inputCor'>
                   <select name="cor" id="imputCor">
                     <option value="azul">azul</option>
                     <option value="verde">verde</option>
@@ -96,7 +96,7 @@ class CadastroPedido extends React.Component {
                 </FormGroup>
 
                 <br/>
-                <FormGroup label="*Fornecedor:" htmlFor='inputFornecedor'>
+                <FormGroup label="Fornecedor: " htmlFor='inputFornecedor'>
                   <select name="Fornecedor" id="imputFornecedor">
                     <option value="azul">Nike BR</option>
                     </select>

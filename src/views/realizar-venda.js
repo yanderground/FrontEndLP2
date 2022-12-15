@@ -15,6 +15,7 @@ class RealizarVenda extends React.Component {
     genero: '',
     cor: '',
     quantidade: '',
+    cliente: '',
     dataVenda: ''
   };
 
@@ -32,14 +33,14 @@ class RealizarVenda extends React.Component {
             <div className='col-lg-12'>
               <div className='bs-component'>
 
-              <FormGroup label="*Produto" htmlFor='inputProduto'>
+              <FormGroup label="Produto: " htmlFor='inputProduto'>
                   <select name="produto" id="inputproduto">
                     <option value="Camisa Nike dryfit">Camisa Nike dryfit</option>
                   </select>
                 </FormGroup>
                 <br/>
                 
-                <FormGroup label="*Tamanho" htmlFor='inputTamanho'>
+                <FormGroup label="Tamanho: " htmlFor='inputTamanho'>
                   <select name="tamanho" id="inputTamanho">
                     <option value="p">P</option>
                     <option value="m">M</option>
@@ -49,7 +50,7 @@ class RealizarVenda extends React.Component {
                 </FormGroup>
                 <br/>
 
-                <FormGroup label="*Gênero" htmlFor='inputGenero'>
+                <FormGroup label="Gênero: " htmlFor='inputGenero'>
                   <select name="genero" id="inputGenero">
                     <option value="masculino">masculino</option>
                     <option value="feminino">feminino</option>
@@ -57,7 +58,7 @@ class RealizarVenda extends React.Component {
                 </FormGroup>
                 <br/>
 
-                <FormGroup label="*Cor: " htmlFor='inputCor'>
+                <FormGroup label="Cor: " htmlFor='inputCor'>
                   <select name="cor" id="imputCor">
                     <option value="azul">azul</option>
                     <option value="verde">verde</option>
@@ -66,15 +67,29 @@ class RealizarVenda extends React.Component {
                 </FormGroup>
                 <br/>
 
-                <FormGroup label='Quantidade: *' htmlFor='inputQuantidade'>
+                <FormGroup label='Quantidade: ' htmlFor='inputQuantidade' >
                   <input
                     type='number'
                     id='inputQuantidade'
                     value={this.state.quantidade}
                     className='form-control'
                     name='quantidade'
+                    defaultValue={1}
                     onChange={(e) =>
                       this.setState({ quantidade: e.target.value })
+                    }
+                  />
+                </FormGroup>
+
+                <FormGroup label='Cliente: ' htmlFor='inputCliente'>
+                  <input
+                    type='text'
+                    id='inputCliente'
+                    value={this.state.cliente}
+                    className='form-control'
+                    name='cliente'
+                    onChange={(e) =>
+                      this.setState({ cliente: e.target.value })
                     }
                   />
                 </FormGroup>
