@@ -16,17 +16,17 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
-const baseURL = `${BASE_URL}/funcionarios`;
+const baseURL = `${BASE_URL}/fornecedores`;
 
-function ListagemFuncionarios() {
+function ListagemFornecedores() {
   const navigate = useNavigate();
 
   const cadastrar = () => {
-    navigate(`/cadastro-funcionario`);
+    navigate(`/cadastro-fornecedor`);
   };
 
   const editar = (id) => {
-    navigate(`/cadastro-funcionario/${id}`);
+    navigate(`/cadastro-fornecedor/${id}`);
   };
 
   const [dados, setDados] = React.useState(null);
@@ -40,7 +40,7 @@ function ListagemFuncionarios() {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(function (response) {
-        mensagemSucesso(`Funcionário excluído com sucesso!`);
+        mensagemSucesso(`Fornecedor excluído com sucesso!`);
         setDados(
           dados.filter((dado) => {
             return dado.id !== id;
@@ -48,7 +48,7 @@ function ListagemFuncionarios() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir o Funcionário`);
+        mensagemErro(`Erro ao excluir o Fornecedor`);
       });
   }
 
@@ -62,7 +62,7 @@ function ListagemFuncionarios() {
 
   return (
     <div className='container'>
-      <Card title='Listagem de Funcionários'>
+      <Card title='Listagem de Fornecedores'>
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
@@ -71,7 +71,7 @@ function ListagemFuncionarios() {
                 className='btn btn-warning'
                 onClick={() => cadastrar()}
               >
-                Novo Funcionário
+                Novo Fornecedor
               </button>
               <table className='table table-hover'>
                 <thead>
@@ -89,7 +89,7 @@ function ListagemFuncionarios() {
                       <td>{dado.nome}</td>
                       <td>{dado.email}</td>
                       <td>{dado.telefone}</td>
-                      <td>{dado.cpf}</td>
+                      <td>{dado.cnpj}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton
@@ -118,4 +118,4 @@ function ListagemFuncionarios() {
   );
 }
 
-export default ListagemFuncionarios;
+export default ListagemFornecedores;

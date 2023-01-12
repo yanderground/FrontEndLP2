@@ -6,6 +6,7 @@ import CadastroFuncionario from './views/cadastro-funcionario';
 import ListagemFuncionarios from './views/listagem-funcionarios';
 import CadastroProduto from './views/cadastro-produto';
 import CadastroFornecedor from './views/cadastro-fornecedor';
+import ListagemFornecedores from './views/listagem-fornecedores';
 import CadastroCliente from './views/cadastro-cliente';
 import CadastroTamanho from './views/cadastro-tamanho';
 import CadastroCor from './views/cadastro-cor';
@@ -17,14 +18,23 @@ function Rotas(props) {
     <BrowserRouter>
       <Routes>
         <Route path='/cadastro-pedido' element={<CadastroPedido />} />
+
         <Route path='/cadastro-funcionario' element={<CadastroFuncionario />} />
         <Route path='/listagem-funcionarios' element={<ListagemFuncionarios />} />
+
         <Route path='/cadastro-produto' element={<CadastroProduto />} />
+
         <Route path='/cadastro-fornecedor' element={<CadastroFornecedor />} />
+        <Route path='/listagem-fornecedores' element={<ListagemFornecedores />} />
+
         <Route path='/cadastro-cliente' element={<CadastroCliente />} />
+
         <Route path='/cadastro-tamanho' element={<CadastroTamanho />} />
+
         <Route path='/cadastro-cor' element={<CadastroCor />} />
+
         <Route path='/cadastro-departamento' element={<CadastroDepartamento />} />
+
         <Route path='/realizar-venda' element={<RealizarVenda />} />
       </Routes>
       
