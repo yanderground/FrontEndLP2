@@ -3,6 +3,7 @@ import React from 'react';
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 import CadastroPedido from './views/cadastro-pedido';
 import CadastroFuncionario from './views/cadastro-funcionario';
+import ListagemFuncionarios from './views/listagem-funcionarios';
 import CadastroProduto from './views/cadastro-produto';
 import CadastroFornecedor from './views/cadastro-fornecedor';
 import CadastroCliente from './views/cadastro-cliente';
@@ -17,6 +18,7 @@ function Rotas(props) {
       <Routes>
         <Route path='/cadastro-pedido' element={<CadastroPedido />} />
         <Route path='/cadastro-funcionario' element={<CadastroFuncionario />} />
+        <Route path='/listagem-funcionarios' element={<ListagemFuncionarios />} />
         <Route path='/cadastro-produto' element={<CadastroProduto />} />
         <Route path='/cadastro-fornecedor' element={<CadastroFornecedor />} />
         <Route path='/cadastro-cliente' element={<CadastroCliente />} />
