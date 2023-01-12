@@ -1,7 +1,4 @@
 ## Dependências
 
-npm install bootswatch
+npm install bootswatch @mui/material @emotion/react @emotion/styled toastr axios
 
-npm install @mui/material @emotion/react @emotion/styled
-
-npm install toastr
