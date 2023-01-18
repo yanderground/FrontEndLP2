@@ -1,38 +1,122 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 
 import Card from '../components/card';
 import FormGroup from '../components/form-group';
 
-import { mensagemSucesso } from '../components/toastr';
+import { mensagemSucesso, mensagemErro } from '../components/toastr';
+
 import '../custom.css';
 
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
-class CadastroFuncionario extends React.Component {
-  state = {
-    nome: '',
-    email: '',
-    telefone: '',
-    cpf: '',
-    cep: '',
-    logradouro: '',
-    numero: '',
-    complemento: '',
-    estado: '',
-    cidade: '',
-    funcao: ''
-  };
+function CadastroFuncionario(){
+  const { idParam } = useParams();
 
-  cadastrar = () => {
-    mensagemSucesso(`Usuário ${this.state.nome} cadastrado com sucesso!`);
-  };
+  const navigate = useNavigate();
 
-  cancelar = () => {};
+  const baseURL = `${BASE_URL}/funcionarios`;
+  
+  const [id, setId] = useState('');
+  const [nome, setNome] = useState('');
+  const [cpf, setCpf] = useState('');
+  const [email, setEmail] = useState('');
+  const [telefone, setTelefone] = useState('');
+  const [cep, setCep] = useState('');
+  const [estado, setEstado] = useState('');
+  const [cidade, setCidade] = useState('');
+  const [logradouro, setLogradouro] = useState('');
+  const [numero, setNumero] = useState('');
+  const [complemento, setComplemento] = useState('');
 
-  render() {
+  const [dados, setDados] = React.useState([]);
+
+  useEffect(() => {
+    buscar(); // eslint-disable-next-line
+  }, [id]);
+
+  function inicializar() {
+    if (idParam == null) {
+      setId('');
+      setNome('');
+      setCpf('');
+      setEmail('');
+      setTelefone('');
+      setCep('');
+      setEstado('');
+      setCidade('');
+      setLogradouro('');
+      setNumero('');
+      setComplemento('');
+    } else {
+      setId(dados.id);
+      setNome(dados.nome);
+      setCpf(dados.cpf);
+      setEmail(dados.email);
+      setTelefone(dados.telefone);
+      setCep(dados.cep);
+      setEstado(dados.estado);
+      setCidade(dados.cidade);
+      setLogradouro(dados.logradouro);
+      setNumero(dados.numero);
+      setComplemento(dados.complemento);
+    }
+  }
+
+  async function salvar() {
+    let data = { id, nome, cpf, email, telefone, cep, estado, cidade, logradouro, numero, complemento };
+    data = JSON.stringify(data);
+    if (idParam == null) {
+      await axios
+        .post(baseURL, data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(function (response) {
+          mensagemSucesso(`Funcionário ${nome} cadastrado com sucesso!`);
+          navigate(`/listagem-funcionarios`);
+        })
+        .catch(function (error) {
+          mensagemErro(error.response.data);
+        });
+    } else {
+      await axios
+        .put(`${baseURL}/${idParam}`, data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(function (response) {
+          mensagemSucesso(`Funcionário ${nome} alterado com sucesso!`);
+          navigate(`/listagem-funcionarios`);
+        })
+        .catch(function (error) {
+          mensagemErro(error.response.data);
+        });
+    }
+  }
+
+  if (!dados) return null;
+
+  async function buscar() {
+   axios.get(`${baseURL}/${idParam}`).then((response) => {
+      setDados(response.data);
+    });
+    setId(dados.id);
+    setNome(dados.nome);
+    setCpf(dados.cpf);
+    setEmail(dados.email);
+    setTelefone(dados.telefone);
+    setCep(dados.cep);
+    setEstado(dados.estado);
+    setCidade(dados.cidade);
+    setLogradouro(dados.logradouro);
+    setNumero(dados.numero);
+    setComplemento(dados.complemento);
+  }
+
+ if (!dados) return null;
+
     return (
       <div className='container'>
         <Card title='Cadastro de Funcionário'>
@@ -43,10 +127,10 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='text'
                     id='inputNome'
-                    value={this.state.nome}
+                    value={nome}
                     className='form-control'
                     name='nome'
-                    onChange={(e) => this.setState({ nome: e.target.value })}
+                    onChange={(e) => setNome(e.target.value)}
                   />
                 </FormGroup>
 
@@ -54,10 +138,10 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='email'
                     id='inputEmail'
-                    value={this.state.email}
+                    value={email}
                     className='form-control'
                     name='email'
-                    onChange={(e) => this.setState({ email: e.target.value })}
+                    onChange={(e) => setEmail(e.target.value )}
                   />
                 </FormGroup>
       
@@ -65,10 +149,10 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='number'
                     id='inputTelefone'
-                    value={this.state.telefone}
+                    value={telefone}
                     className='form-control'
                     name='telefone'
-                    onChange={(e) => this.setState({ telefone: e.target.value })}
+                    onChange={(e) => setTelefone( e.target.value )}
                   />
                 </FormGroup>
 
@@ -76,11 +160,11 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='number'
                     id='inputCPF'
-                    value={this.state.cpf}
+                    value={cpf}
                     className='form-control'
                     name='cpf'
                     onChange={(e) =>
-                      this.setState({ cpf: e.target.value })
+                      setCpf( e.target.value )
                     }
                   />
                 </FormGroup>
@@ -89,11 +173,11 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='number'
                     id='inputCEP'
-                    value={this.state.cep}
+                    value={cep}
                     className='form-control'
                     name='cep'
                     onChange={(e) =>
-                      this.setState({ cep: e.target.value })
+                      setCep( e.target.value )
                     }
                   />
                 </FormGroup>
@@ -102,11 +186,11 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='text'
                     id='inputLogradouro'
-                    value={this.state.logradouro}
+                    value={logradouro}
                     className='form-control'
                     name='logradouro'
                     onChange={(e) =>
-                      this.setState({ logradouro: e.target.value })
+                      setLogradouro( e.target.value )
                     }
                   />
                 </FormGroup>
@@ -115,11 +199,11 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='number'
                     id='inputNumero'
-                    value={this.state.numero}
+                    value={numero}
                     className='form-control'
                     name='numero'
                     onChange={(e) =>
-                      this.setState({ numero: e.target.value })
+                      setNumero( e.target.value )
                     }
                   />
                 </FormGroup>
@@ -128,11 +212,11 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='text'
                     id='inputComplemento'
-                    value={this.state.complemento}
+                    value={complemento}
                     className='form-control'
                     name='complemento'
                     onChange={(e) =>
-                      this.setState({ complemento: e.target.value })
+                      setComplemento( e.target.value )
                     }
                   />
                 </FormGroup>
@@ -141,11 +225,11 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='text'
                     id='inputCidade'
-                    value={this.state.cidade}
+                    value={cidade}
                     className='form-control'
                     name='cidade'
                     onChange={(e) =>
-                      this.setState({ cidade: e.target.value })
+                      setCidade( e.target.value )
                     }
                   />
                 </FormGroup>
@@ -154,11 +238,11 @@ class CadastroFuncionario extends React.Component {
                   <input
                     type='text'
                     id='inputEstado'
-                    value={this.state.estado}
+                    value={estado}
                     className='form-control'
                     name='estado'
                     onChange={(e) =>
-                      this.setState({ estado: e.target.value })
+                      setEstado( e.target.value )
                     }
                   />
                 </FormGroup>
@@ -167,10 +251,10 @@ class CadastroFuncionario extends React.Component {
                   <div>
                     <input type="checkbox" 
                     id="gerente"
-                    value={this.state.funcao} 
+                    value={null} 
                     name="gerente"
                     onChange={(e) =>
-                      this.setState({ funcao: e.target.value})  
+                      ( e.target.value)  
                     } />
                     <label for="gerente"> gerente</label>
                   </div>
@@ -179,14 +263,14 @@ class CadastroFuncionario extends React.Component {
 
                 <Stack spacing={1} padding={1} direction='row'>
                   <button
-                    onClick={this.cadastrar}
+                    onClick={salvar}
                     type='button'
                     className='btn btn-success'
                   >
                     Salvar
                   </button>
                   <button
-                    onClick={this.cancelar}
+                    onClick={inicializar}
                     type='button'
                     className='btn btn-danger'
                   >
@@ -199,7 +283,6 @@ class CadastroFuncionario extends React.Component {
         </Card>
       </div>
     );
-  }
 }
 
 export default CadastroFuncionario;
