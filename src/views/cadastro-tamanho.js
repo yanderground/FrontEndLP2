@@ -20,14 +20,14 @@ function CadastroTamanho(){
 
   const baseURL = `${BASE_URL_2}/tamanhos`;
   
-  const [id, setId] = useState('');
+  const [id, setId] = useState(0);
   const [titulo, setTitulo] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
   function inicializar() {
     if (idParam == null) {
-      setId('');
+      setId(0);
       setTitulo('');
     } else {
       setId(dados.id);
@@ -45,7 +45,7 @@ function CadastroTamanho(){
         })
         .then(function (response) {
           mensagemSucesso(`Tamanho ${titulo} cadastrado com sucesso!`);
-          navigate(`/listagem-tamanho`);
+          navigate(`/listagem-tamanhos`);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -57,7 +57,7 @@ function CadastroTamanho(){
         })
         .then(function (response) {
           mensagemSucesso(`Tamanho ${titulo} alterado com sucesso!`);
-          navigate(`/listagem-tamanho`);
+          navigate(`/listagem-tamanhos`);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -68,8 +68,6 @@ function CadastroTamanho(){
   useEffect(() => {
     buscar(); // eslint-disable-next-line
   }, [id]);
-
-  if (!dados) return null;
 
   async function buscar() {
    await axios.get(`${baseURL}/${idParam}`).then((response) => {

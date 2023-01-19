@@ -23,6 +23,10 @@ const baseURL2 = `${BASE_URL}/gerentes`;
 function ListagemFuncionarios() {
   const navigate = useNavigate();
 
+  
+  const [dados, setDados] = React.useState(null);
+  const [dados2, setDados2] = React.useState(null);
+
   React.useEffect(() => {
     axios.get(baseURL).then((response) => {
       setDados(response.data);
@@ -49,13 +53,11 @@ function ListagemFuncionarios() {
 
   };
 
-  const [dados, setDados] = React.useState(null);
-  const [dados2, setDados2] = React.useState(null);
 
   async function excluir(id,i) {
     let data = JSON.stringify({ id });
     let url;
-    if(i === 0){
+    if(i == 0){
       url = `${baseURL}/${id}`;
     } else {
       url = `${baseURL2}/${id}`;
@@ -66,11 +68,19 @@ function ListagemFuncionarios() {
       })
       .then(function (response) {
         mensagemSucesso(`Exclusão realizada com sucesso!`);
-        setDados(
-          dados.filter((dado) => {
-            return dado.id !== id;
-          })
-        );
+        if(i == 0){
+          setDados(
+            dados.filter((dado) => {
+              return dado.id !== id;
+            })
+          );
+        } else {
+          setDados(
+            dados2.filter((dado2) => {
+              return dado2.id !== id;
+            })
+          );
+        }
       })
       .catch(function (error) {
         mensagemErro(`Erro ao relizar exclusão`);
@@ -79,6 +89,8 @@ function ListagemFuncionarios() {
 
 
   if (!dados) return null;
+  if (!dados2) return null;
+
 
   return (
     <div className='container'>

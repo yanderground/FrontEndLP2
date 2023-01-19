@@ -13,14 +13,14 @@ import '../custom.css';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
-function CadastroForncedeores(){
+function CadastroFornecedores(){
   const { idParam } = useParams();
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL}/forncedeores`;
+  const baseURL = `${BASE_URL}/fornecedores`;
   
-  const [id, setId] = useState('');
+  const [id, setId] = useState(0);
   const [nome, setNome] = useState('');
   const [cnpj, setCnpj] = useState('');
   const [email, setEmail] = useState('');
@@ -40,7 +40,7 @@ function CadastroForncedeores(){
 
   function inicializar() {
     if (idParam == null) {
-      setId('');
+      setId(0);
       setNome('');
       setCnpj('');
       setEmail('');
@@ -67,7 +67,7 @@ function CadastroForncedeores(){
   }
 
   async function salvar() {
-    let data = { id, nome, cnpj, email, telefone, cep, estado, cidade, logradouro, numero, complemento };
+    let data = { id, nome, telefone, email, cep, logradouro, numero, complemento, estado, cidade, cnpj };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -75,8 +75,8 @@ function CadastroForncedeores(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Funcionário ${nome} cadastrado com sucesso!`);
-          navigate(`/listagem-funcionarios`);
+          mensagemSucesso(`Fornecedor ${nome} cadastrado com sucesso!`);
+          navigate(`/listagem-fornecedores`);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -88,16 +88,13 @@ function CadastroForncedeores(){
         })
         .then(function (response) {
           mensagemSucesso(`Funcionário ${nome} alterado com sucesso!`);
-          navigate(`/listagem-funcionarios`);
+          navigate(`/listagem-fornecedores`);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
         });
     }
   }
-
-
-  if (!dados) return null;
 
   async function buscar() {
    await axios.get(`${baseURL}/${idParam}`).then((response) => {
@@ -198,7 +195,7 @@ function CadastroForncedeores(){
 
                 <FormGroup label='Número: *' htmlFor='inputNumero'>
                   <input
-                    type='number'
+                    type='text'
                     id='inputNumero'
                     value={numero}
                     className='form-control'
@@ -272,4 +269,4 @@ function CadastroForncedeores(){
     );
 }
 
-export default CadastroForncedeores;
+export default CadastroFornecedores;

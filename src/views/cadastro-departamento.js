@@ -18,16 +18,16 @@ function CadastroDepartamento(){
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL_2}/Departamento`;
+  const baseURL = `${BASE_URL_2}/departamentos`;
   
-  const [id, setId] = useState('');
+  const [id, setId] = useState(0);
   const [titulo, setTitulo] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
   function inicializar() {
     if (idParam == null) {
-      setId('');
+      setId(0);
       setTitulo('');
     } else {
       setId(dados.id);
@@ -45,7 +45,7 @@ function CadastroDepartamento(){
         })
         .then(function (response) {
           mensagemSucesso(`Departamento ${titulo} cadastrado com sucesso!`);
-          navigate(`/listagem-Departamento`);
+          navigate(`/listagem-departamentos`);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -57,7 +57,7 @@ function CadastroDepartamento(){
         })
         .then(function (response) {
           mensagemSucesso(`Departamento ${titulo} alterado com sucesso!`);
-          navigate(`/listagem-Departamento`);
+          navigate(`/listagem-departamentos`);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);

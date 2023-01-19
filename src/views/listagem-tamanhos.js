@@ -28,7 +28,7 @@ function ListagemTamanhos() {
   }, []);
 
   const cadastrar = () => {
-      navigate(`/cadastro-tamanhos`);
+      navigate(`/cadastro-tamanho`);
   };
 
   const editar = (id) => {

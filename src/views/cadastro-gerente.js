@@ -20,7 +20,7 @@ function CadastroGerente(){
 
   const baseURL = `${BASE_URL}/gerentes`;
   
-  const [id, setId] = useState('');
+  const [id, setId] = useState(0);
   const [nome, setNome] = useState('');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
@@ -40,7 +40,7 @@ function CadastroGerente(){
 
   function inicializar() {
     if (idParam == null) {
-      setId('');
+      setId(0);
       setNome('');
       setCpf('');
       setEmail('');

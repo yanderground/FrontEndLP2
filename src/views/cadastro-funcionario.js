@@ -20,7 +20,7 @@ function CadastroFuncionario(){
 
   const baseURL = `${BASE_URL}/funcionarios`;
   
-  const [id, setId] = useState('');
+  const [id, setId] = useState(0);
   const [nome, setNome] = useState('');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
@@ -40,7 +40,7 @@ function CadastroFuncionario(){
 
   function inicializar() {
     if (idParam == null) {
-      setId('');
+      setId(0);
       setNome('');
       setCpf('');
       setEmail('');

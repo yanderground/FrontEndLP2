@@ -18,18 +18,20 @@ function CadastroCor(){
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL_2}/Cor`;
+  const baseURL = `${BASE_URL_2}/cores`;
   
-  const [id, setId] = useState('');
+  const [id, setId] = useState(0);
   const [titulo, setTitulo] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
   function inicializar() {
+    
     if (idParam == null) {
-      setId('');
+      setId(0);
       setTitulo('');
     } else {
+      console.log(idParam)
       setId(dados.id);
       setTitulo(dados.Titulo);
     }
@@ -44,8 +46,8 @@ function CadastroCor(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Cliente ${titulo} cadastrado com sucesso!`);
-          navigate(`/listagem-Cor`);
+          mensagemSucesso(`Cor ${titulo} cadastrada com sucesso!`);
+          navigate(`/listagem-cores`);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -56,8 +58,8 @@ function CadastroCor(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Cliente ${titulo} alterado com sucesso!`);
-          navigate(`/listagem-Cor`);
+          mensagemSucesso(`Cor ${titulo} alterada com sucesso!`);
+          navigate(`/listagem-cores`);
         })
         .catch(function (error) {
           mensagemErro(error.response.data);
@@ -68,8 +70,6 @@ function CadastroCor(){
   useEffect(() => {
     buscar(); // eslint-disable-next-line
   }, [id]);
-
-  if (!dados) return null;
 
   async function buscar() {
    await axios.get(`${baseURL}/${idParam}`).then((response) => {

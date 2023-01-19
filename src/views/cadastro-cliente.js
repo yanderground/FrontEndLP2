@@ -20,7 +20,7 @@ function CadastroClientes(){
 
   const baseURL = `${BASE_URL}/clientes`;
   
-  const [id, setId] = useState('');
+  const [id, setId] = useState(0);
   const [nome, setNome] = useState('');
   const [cpf, setCpf] = useState('');
   const [email, setEmail] = useState('');
@@ -40,7 +40,7 @@ function CadastroClientes(){
 
   function inicializar() {
     if (idParam == null) {
-      setId('');
+      setId(0);
       setNome('');
       setCpf('');
       setEmail('');
@@ -95,8 +95,6 @@ function CadastroClientes(){
         });
     }
   }
-
-  if (!dados) return null;
 
   async function buscar() {
    await axios.get(`${baseURL}/${idParam}`).then((response) => {
