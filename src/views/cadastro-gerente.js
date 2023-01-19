@@ -13,12 +13,12 @@ import '../custom.css';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
-function CadastroFuncionario(){
+function CadastroGerente(){
   const { idParam } = useParams();
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL}/funcionarios`;
+  const baseURL = `${BASE_URL}/gerentes`;
   
   const [id, setId] = useState('');
   const [nome, setNome] = useState('');
@@ -75,7 +75,7 @@ function CadastroFuncionario(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Funcionário ${nome} cadastrado com sucesso!`);
+          mensagemSucesso(`Gerente ${nome} cadastrado com sucesso!`);
           navigate(`/listagem-funcionarios`);
         })
         .catch(function (error) {
@@ -87,7 +87,7 @@ function CadastroFuncionario(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Funcionário ${nome} alterado com sucesso!`);
+          mensagemSucesso(`Gerente ${nome} alterado com sucesso!`);
           navigate(`/listagem-funcionarios`);
         })
         .catch(function (error) {
@@ -119,7 +119,7 @@ function CadastroFuncionario(){
 
     return (
       <div className='container'>
-        <Card title='Cadastro de Funcionário'>
+        <Card title='Cadastro de Gerente'>
           <div className='row'>
             <div className='col-lg-12'>
               <div className='bs-component'>
@@ -271,4 +271,4 @@ function CadastroFuncionario(){
     );
 }
 
-export default CadastroFuncionario;
+export default CadastroGerente;

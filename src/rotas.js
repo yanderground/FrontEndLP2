@@ -4,6 +4,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 
 import CadastroPedido from './views/cadastro-pedido';
 
+import CadastroGerente from './views/cadastro-gerente';
 import CadastroFuncionario from './views/cadastro-funcionario';
 import ListagemFuncionarios from './views/listagem-funcionarios';
 
@@ -27,6 +28,8 @@ function Rotas(props) {
       <Routes>
         <Route path='/cadastro-pedido/:idParam' element={<CadastroPedido />} />
 
+        <Route path='/cadastro-gerente/:idParam' element={<CadastroGerente />} />
+        <Route path='/cadastro-gerente/' element={<CadastroGerente />} />
         <Route path='/cadastro-funcionario/:idParam' element={<CadastroFuncionario />} />
         <Route path='/cadastro-funcionario/' element={<CadastroFuncionario />} />
         <Route path='/listagem-funcionarios' element={<ListagemFuncionarios />} />
