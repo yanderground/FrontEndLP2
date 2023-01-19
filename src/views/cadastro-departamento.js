@@ -69,8 +69,6 @@ function CadastroDepartamento(){
     buscar(); // eslint-disable-next-line
   }, [id]);
 
-  if (!dados) return null;
-
   async function buscar() {
    await axios.get(`${baseURL}/${idParam}`).then((response) => {
       setDados(response.data);

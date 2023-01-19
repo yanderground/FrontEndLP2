@@ -198,7 +198,7 @@ function CadastroForncedeores(){
 
                 <FormGroup label='Número: *' htmlFor='inputNumero'>
                   <input
-                    type='text'
+                    type='number'
                     id='inputNumero'
                     value={numero}
                     className='form-control'
