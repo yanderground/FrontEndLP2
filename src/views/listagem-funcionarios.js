@@ -60,13 +60,12 @@ function ListagemFuncionarios() {
     } else {
       url = `${baseURL2}/${id}`;
     }
-    console.log(url);
     await axios
       .delete(url, data, {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(function (response) {
-        mensagemSucesso(`Funcionário excluído com sucesso!`);
+        mensagemSucesso(`Exclusão realizada com sucesso!`);
         setDados(
           dados.filter((dado) => {
             return dado.id !== id;
@@ -74,7 +73,7 @@ function ListagemFuncionarios() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir o Funcionário`);
+        mensagemErro(`Erro ao relizar exclusão`);
       });
   }
 
