@@ -31,7 +31,7 @@ function CadastroDepartamento(){
       setTitulo('');
     } else {
       setId(dados.id);
-      setTitulo(dados.Titulo);
+      setTitulo(dados.titulo);
     }
   }
 
@@ -74,7 +74,7 @@ function CadastroDepartamento(){
       setDados(response.data);
     });
     setId(dados.id);
-    setTitulo(dados.Titulo);
+    setTitulo(dados.titulo);
   }
 
  if (!dados) return null;

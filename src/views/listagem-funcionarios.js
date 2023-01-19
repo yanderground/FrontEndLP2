@@ -87,10 +87,7 @@ function ListagemFuncionarios() {
       });
   }
 
-
-  if (!dados) return null;
-  if (!dados2) return null;
-
+  if (!dados || !dados2) return null;
 
   return (
     <div className='container'>

@@ -58,7 +58,6 @@ function ListagemFornecedores() {
   }, []);
 
   if (!dados) return null;
-  console.log(dados);
 
   return (
     <div className='container'>

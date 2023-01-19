@@ -33,7 +33,7 @@ function CadastroCor(){
     } else {
       console.log(idParam)
       setId(dados.id);
-      setTitulo(dados.Titulo);
+      setTitulo(dados.titulo);
     }
   }
 
@@ -76,7 +76,7 @@ function CadastroCor(){
       setDados(response.data);
     });
     setId(dados.id);
-    setTitulo(dados.Titulo);
+    setTitulo(dados.titulo);
   }
 
  if (!dados) return null;

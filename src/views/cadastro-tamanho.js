@@ -31,7 +31,7 @@ function CadastroTamanho(){
       setTitulo('');
     } else {
       setId(dados.id);
-      setTitulo(dados.Titulo);
+      setTitulo(dados.titulo);
     }
   }
 
@@ -74,7 +74,7 @@ function CadastroTamanho(){
       setDados(response.data);
     });
     setId(dados.id);
-    setTitulo(dados.Titulo);
+    setTitulo(dados.titulo);
   }
 
  if (!dados) return null;
