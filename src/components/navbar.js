@@ -45,7 +45,7 @@ function Navbar(props) {
             />
             <NavbarItem
               render='true'
-              href='/cadastro-cliente'
+              href='/listagem-cliente'
               label='Clientes'
             />
             <NavbarItem

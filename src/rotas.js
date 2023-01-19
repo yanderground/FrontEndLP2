@@ -14,6 +14,8 @@ import CadastroFornecedor from './views/cadastro-fornecedor';
 import ListagemFornecedores from './views/listagem-fornecedores';
 
 import CadastroCliente from './views/cadastro-cliente';
+import ListagemClientes from './views/listagem-clientes';
+
 import CadastroTamanho from './views/cadastro-tamanho';
 
 import CadastroCor from './views/cadastro-cor';
@@ -40,6 +42,10 @@ function Rotas(props) {
         <Route path='/listagem-fornecedores' element={<ListagemFornecedores />} />
 
         <Route path='/cadastro-cliente/:idParam?' element={<CadastroCliente />} />
+        <Route path='/cadastro-cliente/' element={<CadastroCliente />} />
+        <Route path='/listagem-cliente' element={<ListagemClientes />} />
+
+
 
         <Route path='/cadastro-tamanho/:idParam?' element={<CadastroTamanho />} />
 
