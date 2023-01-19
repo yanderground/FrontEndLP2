@@ -39,7 +39,7 @@ function CadastroFuncionario(){
   }, [id]);
 
   function inicializar() {
-    if (idParam == null) {
+    if (idParam == null || idParam == undefined) {
       setId('');
       setNome('');
       setCpf('');
@@ -99,7 +99,7 @@ function CadastroFuncionario(){
   if (!dados) return null;
 
   async function buscar() {
-   axios.get(`${baseURL}/${idParam}`).then((response) => {
+   await axios.get(`${baseURL}/${idParam}`).then((response) => {
       setDados(response.data);
     });
     setId(dados.id);
@@ -147,7 +147,7 @@ function CadastroFuncionario(){
       
                 <FormGroup label='Telefone: *' htmlFor='inputTelefone'>
                   <input
-                    type='number'
+                    type='text'
                     id='inputTelefone'
                     value={telefone}
                     className='form-control'
@@ -158,7 +158,7 @@ function CadastroFuncionario(){
 
                 <FormGroup label='CPF: *' htmlFor='inputCPF'>
                   <input
-                    type='number'
+                    type='text'
                     id='inputCPF'
                     value={cpf}
                     className='form-control'
@@ -171,7 +171,7 @@ function CadastroFuncionario(){
 
                 <FormGroup label='CEP: *' htmlFor='inputCEP'>
                   <input
-                    type='number'
+                    type='text'
                     id='inputCEP'
                     value={cep}
                     className='form-control'
@@ -245,20 +245,6 @@ function CadastroFuncionario(){
                       setEstado( e.target.value )
                     }
                   />
-                </FormGroup>
-
-                <FormGroup label='Função: ' htmlFor='inputFunção'>
-                  <div>
-                    <input type="checkbox" 
-                    id="gerente"
-                    value={null} 
-                    name="gerente"
-                    onChange={(e) =>
-                      ( e.target.value)  
-                    } />
-                    <label for="gerente"> gerente</label>
-                  </div>
-
                 </FormGroup>
 
                 <Stack spacing={1} padding={1} direction='row'>

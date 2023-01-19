@@ -6,11 +6,6 @@ import 'toastr/build/toastr.css';
 import Navbar from './components/navbar.js';
 import Rotas from './rotas.js';
 
-import CadastroFuncionario from './views/cadastro-funcionario';
-import CadastroFornecedor from './views/cadastro-fornecedor';
-import CadastroProduto from './views/cadastro-produto';
-import CadastroPedido from './views/cadastro-pedido';
-
 class App extends React.Component {
   render() {
     return (
@@ -19,8 +14,6 @@ class App extends React.Component {
         <Rotas />
         <Navbar />
         </div>
-      
-      
     );
   }
 }
