@@ -50,17 +50,17 @@ function Navbar(props) {
             />
             <NavbarItem
               render='true'
-              href='/cadastro-tamanho'
+              href='/listagem-tamanhos'
               label='Tamanhos'
             />
             <NavbarItem
               render='true'
-              href='/cadastro-cor'
+              href='/listagem-cores'
               label='Cores'
             />
             <NavbarItem
               render='true'
-              href='/cadastro-departamento'
+              href='/listagem-departamentos'
               label='Departamentos'
             />
             <NavbarItem

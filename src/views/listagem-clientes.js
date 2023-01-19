@@ -81,7 +81,6 @@ function ListagemClientes() {
                     <th scope='col'>E-mail</th>
                     <th scope='col'>Telefone</th>
                     <th scope='col'>CPF</th>
-                    <th scope='col'>Função</th>
                     <th scope='col'>Ações</th>
                   </tr>
                 </thead>
@@ -92,7 +91,6 @@ function ListagemClientes() {
                       <td>{dado.email}</td>
                       <td>{dado.telefone}</td>
                       <td>{dado.cpf}</td>
-                      <td>Clientes</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton

@@ -1,54 +1,113 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 
 import Card from '../components/card';
 import FormGroup from '../components/form-group';
 
-import { mensagemSucesso } from '../components/toastr';
+import { mensagemSucesso, mensagemErro } from '../components/toastr';
+
 import '../custom.css';
 
-class CadastroTamanho extends React.Component {
-  state = {
-    tamanho: ''
-  };
+import axios from 'axios';
+import { BASE_URL_2 } from '../config/axios';
 
-  cadastrar = () => {
-    mensagemSucesso(`Tamanho ${this.state.tamanho} cadastrado com sucesso!`);
-  };
+function CadastroTamanho(){
+  const { idParam } = useParams();
 
-  cancelar = () => {};
+  const navigate = useNavigate();
 
-  render() {
+  const baseURL = `${BASE_URL_2}/tamanhos`;
+  
+  const [id, setId] = useState('');
+  const [titulo, setTitulo] = useState('');
+
+  const [dados, setDados] = React.useState([]);
+
+  function inicializar() {
+    if (idParam == null) {
+      setId('');
+      setTitulo('');
+    } else {
+      setId(dados.id);
+      setTitulo(dados.Titulo);
+    }
+  }
+
+  async function salvar() {
+    let data = { id, titulo };
+    data = JSON.stringify(data);
+    if (idParam == null) {
+      await axios
+        .post(baseURL, data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(function (response) {
+          mensagemSucesso(`Tamanho ${titulo} cadastrado com sucesso!`);
+          navigate(`/listagem-tamanho`);
+        })
+        .catch(function (error) {
+          mensagemErro(error.response.data);
+        });
+    } else {
+      await axios
+        .put(`${baseURL}/${idParam}`, data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(function (response) {
+          mensagemSucesso(`Tamanho ${titulo} alterado com sucesso!`);
+          navigate(`/listagem-tamanho`);
+        })
+        .catch(function (error) {
+          mensagemErro(error.response.data);
+        });
+    }
+  }
+
+  useEffect(() => {
+    buscar(); // eslint-disable-next-line
+  }, [id]);
+
+  if (!dados) return null;
+
+  async function buscar() {
+   await axios.get(`${baseURL}/${idParam}`).then((response) => {
+      setDados(response.data);
+    });
+    setId(dados.id);
+    setTitulo(dados.Titulo);
+  }
+
+ if (!dados) return null;
+
     return (
       <div className='container'>
         <Card title='Cadastro de Tamanho'>
           <div className='row'>
             <div className='col-lg-12'>
               <div className='bs-component'>
-                
-                <FormGroup label='Tamanho: *' htmlFor='inputTamanho'>
+                <FormGroup label='Titulo: *' htmlFor='inputTitulo'>
                   <input
                     type='text'
-                    id='inputTamanho'
-                    value={this.state.tamanho}
+                    id='inputTitulo'
+                    value={titulo}
                     className='form-control'
-                    name='tamanho'
-                    onChange={(e) => this.setState({ tamanho: e.target.value })}
+                    name='titulo'
+                    onChange={(e) => setTitulo(e.target.value)}
                   />
                 </FormGroup>
-                <br/>              
 
                 <Stack spacing={1} padding={1} direction='row'>
                   <button
-                    onClick={this.cadastrar}
+                    onClick={salvar}
                     type='button'
                     className='btn btn-success'
                   >
                     Salvar
                   </button>
                   <button
-                    onClick={this.cancelar}
+                    onClick={inicializar}
                     type='button'
                     className='btn btn-danger'
                   >
@@ -61,7 +120,6 @@ class CadastroTamanho extends React.Component {
         </Card>
       </div>
     );
-  }
 }
 
 export default CadastroTamanho;

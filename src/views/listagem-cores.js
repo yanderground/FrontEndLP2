@@ -14,19 +14,25 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 import axios from 'axios';
-import { BASE_URL } from '../config/axios';
+import { BASE_URL_2 } from '../config/axios';
 
-const baseURL = `${BASE_URL}/fornecedores`;
+const baseURL = `${BASE_URL_2}/cores`;
 
-function ListagemFornecedores() {
+function ListagemCores() {
   const navigate = useNavigate();
 
+  React.useEffect(() => {
+    axios.get(baseURL).then((response) => {
+      setDados(response.data);
+    });
+  }, []);
+
   const cadastrar = () => {
-    navigate(`/cadastro-fornecedor`);
+      navigate(`/cadastro-cor`);
   };
 
   const editar = (id) => {
-    navigate(`/cadastro-fornecedor/${id}`);
+      navigate(`/cadastro-cor/${id}`);
   };
 
   const [dados, setDados] = React.useState(null);
@@ -39,7 +45,7 @@ function ListagemFornecedores() {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(function (response) {
-        mensagemSucesso(`Fornecedor excluído com sucesso!`);
+        mensagemSucesso(`cor excluído com sucesso!`);
         setDados(
           dados.filter((dado) => {
             return dado.id !== id;
@@ -47,22 +53,16 @@ function ListagemFornecedores() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir o Fornecedor`);
+        mensagemErro(`Erro ao excluir cor`);
       });
   }
 
-  React.useEffect(() => {
-    axios.get(baseURL).then((response) => {
-      setDados(response.data);
-    });
-  }, []);
 
   if (!dados) return null;
-  console.log(dados);
 
   return (
     <div className='container'>
-      <Card title='Listagem de Fornecedores'>
+      <Card title='Listagem de Cores'>
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
@@ -71,25 +71,20 @@ function ListagemFornecedores() {
                 className='btn btn-warning'
                 onClick={() => cadastrar()}
               >
-                Novo Fornecedor
+                Novo Cores
               </button>
+              
               <table className='table table-hover'>
                 <thead>
                   <tr>
-                    <th scope='col'>Nome</th>
-                    <th scope='col'>E-mail</th>
-                    <th scope='col'>Telefone</th>
-                    <th scope='col'>CNPJ</th>
-                    <th scope='col'>Ações</th>
+                    <th scope='col'>Cor</th>
+                    <th>Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   {dados.map((dado) => (
                     <tr key={dado.id}>
-                      <td>{dado.nome}</td>
-                      <td>{dado.email}</td>
-                      <td>{dado.telefone}</td>
-                      <td>{dado.cnpj}</td>
+                      <td>{dado.titulo}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton
@@ -118,4 +113,4 @@ function ListagemFornecedores() {
   );
 }
 
-export default ListagemFornecedores;
+export default ListagemCores;
