@@ -36,22 +36,28 @@ function Rotas(props) {
         <Route path='/cadastro-funcionario/' element={<CadastroFuncionario />} />
         <Route path='/listagem-funcionarios' element={<ListagemFuncionarios />} />
 
-        <Route path='/cadastro-produto/:idParam?' element={<CadastroProduto />} />
+        <Route path='/cadastro-produto/:idParam' element={<CadastroProduto />} />
+        <Route path='/cadastro-produto/' element={<CadastroProduto />} />
 
-        <Route path='/cadastro-fornecedor/:idParam?' element={<CadastroFornecedor />} />
+        <Route path='/cadastro-fornecedor/:idParam' element={<CadastroFornecedor />} />
+        <Route path='/cadastro-fornecedor/' element={<CadastroFornecedor />} />
         <Route path='/listagem-fornecedores' element={<ListagemFornecedores />} />
 
-        <Route path='/cadastro-cliente/:idParam?' element={<CadastroCliente />} />
+        <Route path='/cadastro-cliente/:idParam' element={<CadastroCliente />} />
         <Route path='/cadastro-cliente/' element={<CadastroCliente />} />
-        <Route path='/listagem-cliente' element={<ListagemClientes />} />
+        <Route path='/listagem-clientes' element={<ListagemClientes />} />
 
 
 
-        <Route path='/cadastro-tamanho/:idParam?' element={<CadastroTamanho />} />
+        <Route path='/cadastro-tamanho/:idParam' element={<CadastroTamanho />} />
+        <Route path='/cadastro-tamanho/' element={<CadastroTamanho />} />
 
-        <Route path='/cadastro-cor/:idParam?' element={<CadastroCor />} />
+
+        <Route path='/cadastro-cor/:idParam' element={<CadastroCor />} />
+        <Route path='/cadastro-cor/' element={<CadastroCor />} />
 
         <Route path='/cadastro-departamento/:idParam?' element={<CadastroDepartamento />} />
+        <Route path='/cadastro-departamento/' element={<CadastroDepartamento />} />
 
         <Route path='/realizar-venda' element={<RealizarVenda />} />
       </Routes>
