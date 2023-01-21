@@ -53,7 +53,7 @@ function ListagemDepartamentos() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir Departamento`);
+        mensagemErro(`Erro ao excluir departamento`);
       });
   }
 

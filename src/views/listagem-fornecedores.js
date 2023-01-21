@@ -47,7 +47,7 @@ function ListagemFornecedores() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir o Fornecedor`);
+        mensagemErro(`Erro ao excluir o fornecedor`);
       });
   }
 

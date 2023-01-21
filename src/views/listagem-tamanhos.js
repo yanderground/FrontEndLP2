@@ -53,7 +53,7 @@ function ListagemTamanhos() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir Tamanho`);
+        mensagemErro(`Erro ao excluir tamanho`);
       });
   }
 
