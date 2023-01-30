@@ -45,7 +45,7 @@ function ListagemCores() {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(function (response) {
-        mensagemSucesso(`cor excluído com sucesso!`);
+        mensagemSucesso(`Cor excluída com sucesso!`);
         setDados(
           dados.filter((dado) => {
             return dado.id !== id;

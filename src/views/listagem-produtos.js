@@ -14,11 +14,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 import axios from 'axios';
-import { BASE_URL_2 } from '../config/axios';
+import { BASE_URL_2, BASE_URL_3 } from '../config/axios';
 
-const baseURL = `${BASE_URL_2}/tamanhos`;
+const baseURL = `${BASE_URL_3}/produtos`;
 
-function ListagemTamanhos() {
+function ListagemProdutos() {
   const navigate = useNavigate();
 
   React.useEffect(() => {
@@ -28,14 +28,41 @@ function ListagemTamanhos() {
   }, []);
 
   const cadastrar = () => {
-      navigate(`/cadastro-tamanho`);
+      navigate(`/cadastro-produto`);
   };
 
   const editar = (id) => {
-      navigate(`/cadastro-tamanho/${id}`);
+      navigate(`/cadastro-produto/${id}`);
   };
 
   const [dados, setDados] = React.useState(null);
+  const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
+  const [dadosGeneros, setDadosGeneros] = React.useState(null);
+  const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
+  const [dadosCores, setDadosCores] = React.useState(null);
+
+
+  React.useEffect(() => {
+    axios.get(`${BASE_URL_2}/departamentos`).then((response) => {
+      setDadosDepartamentos(response.data);
+    });
+    axios.get(`${BASE_URL_2}/generos`).then((response) => {
+      setDadosGeneros(response.data);
+    });
+    axios.get(`${BASE_URL_2}/tamanhos`).then((response) => {
+      setDadosTamanhos(response.data);
+    });
+    axios.get(`${BASE_URL_2}/cores`).then((response) => {
+      setDadosCores(response.data);
+    });
+  }, []);
+
+  function buscar(id){
+      axios.get(`${BASE_URL_2}/cores/${id}`).then((response) => {
+        setDadosCores(response.data);
+      });
+  }
+  
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
@@ -45,7 +72,7 @@ function ListagemTamanhos() {
         headers: { 'Content-Type': 'application/json' },
       })
       .then(function (response) {
-        mensagemSucesso(`Tamanho excluído com sucesso!`);
+        mensagemSucesso(`Produto excluído com sucesso!`);
         setDados(
           dados.filter((dado) => {
             return dado.id !== id;
@@ -53,16 +80,16 @@ function ListagemTamanhos() {
         );
       })
       .catch(function (error) {
-        mensagemErro(`Erro ao excluir tamanho`);
+        mensagemErro(`Erro ao excluir produto`);
       });
   }
 
 
-  if (!dados) return null;
+  if (!dados || !dadosDepartamentos) return null;
 
   return (
     <div className='container'>
-      <Card title='Listagem de Tamanhos'>
+      <Card title='Listagem de Produtos'>
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
@@ -71,20 +98,30 @@ function ListagemTamanhos() {
                 className='btn btn-warning'
                 onClick={() => cadastrar()}
               >
-                Novo Tamanhos
+                Novo Produtos
               </button>
               
               <table className='table table-hover'>
                 <thead>
                   <tr>
-                    <th scope='col'>Tamanhos</th>
-                    <th>Ações</th>
+                    <th scope='col'>Nome</th>
+                    <th scope='col'>Departamento</th>
+                    <th scope='col'>Cor</th>
+                    <th scope='col'>Tamanho</th>
+                    <th scope='col'>Genero</th>
+                    <th scope='col'>Quantidade</th>
+                    <th scope='col'>Ações</th>
                   </tr>
                 </thead>
                 <tbody>
                   {dados.map((dado) => (
                     <tr key={dado.id}>
-                      <td>{dado.titulo}</td>
+                      <td>{dado.nome}</td>
+                      <td>{dado.idDepartamento}</td>
+                      <td>{dado.idCor}</td>
+                      <td>{dado.idTamanho}</td>
+                      <td>{dado.idGenero}</td>
+                      <td>{dado.quantidade}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton
@@ -113,4 +150,4 @@ function ListagemTamanhos() {
   );
 }
 
-export default ListagemTamanhos;
+export default ListagemProdutos;
