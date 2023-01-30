@@ -1,11 +1,15 @@
 import { useState } from "react";
-
+import { useNavigate} from 'react-router-dom';
 
 import "../styles.css";
 
 function TelaInicial() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const cadastrar = () => {
+    navigate(`/listagem-funcionarios`);
+  };
 
   return (
     <div className="container">
@@ -36,15 +40,9 @@ function TelaInicial() {
             </div>
 
             <div className="container-login-form-btn">
-              <button className="login-form-btn">Login</button>
+              <button className="login-form-btn" onClick={() => cadastrar()}>Login</button>
             </div>
 
-            <div className="text-center">
-              <span className="txt1">Não possui conta? </span>
-              <a className="txt2" href="#">
-                Criar conta
-              </a>
-            </div>
           </form>
         </div>
       </div>

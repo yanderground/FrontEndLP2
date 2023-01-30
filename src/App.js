@@ -6,14 +6,17 @@ import 'toastr/build/toastr.css';
 import Navbar from './components/navbar.js';
 import Rotas from './rotas.js';
 
+
 class App extends React.Component {
   render() {
     return (
+
       
-        <div className='container'>
+
+       <div className='container'>
         <Rotas />
         <Navbar />
-        </div>
+      </div>
     );
   }
 }

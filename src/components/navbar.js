@@ -1,12 +1,18 @@
 import React from 'react';
 import 'bootswatch/dist/flatly/bootstrap.css';
 
+
 import NavbarItem from './navbarItem';
 
+
 function Navbar(props) {
+
   return (
+
     <div className='navbar navbar-expand-lg fixed-top navbar-dark bg-primary'>
+      
       <div className='container'>
+      
         <a href='/' className='navbar-brand'>
           Meu Sistema
         </a>
@@ -21,6 +27,9 @@ function Navbar(props) {
         >
           <span className='navbar-toggler-icon'></span>
         </button>
+
+        
+
         <div className='collapse navbar-collapse' id='navbarResponsive'>
           <ul className='navbar-nav'>
             <NavbarItem
@@ -73,8 +82,11 @@ function Navbar(props) {
               href='/realizar-venda'
               label='Vendas'
             />
+            
           </ul>
-        </div>
+        </div> 
+        <a href="./tela-inicial"><button>sair</button> </a>
+                    
       </div>
     </div>
   );
