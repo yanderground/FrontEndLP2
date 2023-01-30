@@ -40,7 +40,7 @@ function Navbar(props) {
             />
             <NavbarItem
               render='true'
-              href='/cadastro-produto'
+              href='/listagem-produtos'
               label='Produtos'
             />
             <NavbarItem
