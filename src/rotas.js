@@ -27,6 +27,7 @@ import ListagemDepartamentos from './views/listagem-departamentos';
 import CadastroDepartamento from './views/cadastro-departamento';
 
 import RealizarVenda from './views/realizar-venda';
+import TelaInicial from './views/tela-inicial';
 
 function Rotas(props) {
   return (
@@ -65,6 +66,8 @@ function Rotas(props) {
         <Route path='/cadastro-departamento/:idParam' element={<CadastroDepartamento />} />
         <Route path='/cadastro-departamento/' element={<CadastroDepartamento />} />
         <Route path='/listagem-departamentos' element={<ListagemDepartamentos />} />
+
+        <Route path='/tela-inicial' element={<TelaInicial />} />
 
       </Routes>
       

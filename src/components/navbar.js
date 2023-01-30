@@ -25,6 +25,11 @@ function Navbar(props) {
           <ul className='navbar-nav'>
             <NavbarItem
               render='true'
+              href='/tela-inicial'
+              label='Início'
+            />
+            <NavbarItem
+              render='true'
               href='/listagem-funcionarios'
               label='Funcionários'
             />
