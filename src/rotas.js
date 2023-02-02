@@ -31,6 +31,7 @@ import ListagemVendas from './views/listagem-vendas'
 import RealizarVenda from './views/realizar-venda';
 
 import TelaLogin from './views/tela-login';
+import TelaInicio from './views/tela-inicio';
 
 
 function Rotas(props) {
@@ -76,7 +77,8 @@ function Rotas(props) {
         <Route path='/cadastro-departamento/' element={<CadastroDepartamento />} />
         <Route path='/listagem-departamentos' element={<ListagemDepartamentos />} />
 
-        <Route path='/tela-login' element={<TelaLogin />} />
+        <Route path='/' element={<TelaLogin />} />
+        <Route path='/tela-inicio' element={<TelaInicio/>} />
 
       </Routes>
       

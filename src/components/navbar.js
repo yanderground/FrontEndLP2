@@ -13,7 +13,7 @@ function Navbar(props) {
       
       <div className='container'>
       
-        <a href='/tela-login' className='navbar-brand'>
+        <a href='/' className='navbar-brand'>
           Meu Sistema
         </a>
         <button
@@ -34,7 +34,7 @@ function Navbar(props) {
           <ul className='navbar-nav'>
             <NavbarItem
               render='true'
-              href='/tela-login'
+              href='/tela-inicio'
               label='Início'
             />
             <NavbarItem
@@ -62,7 +62,7 @@ function Navbar(props) {
               href='/listagem-clientes'
               label='Clientes'
             />
-            <NavbarItem
+            {/* <NavbarItem
               render='true'
               href='/listagem-tamanhos'
               label='Tamanhos'
@@ -76,16 +76,16 @@ function Navbar(props) {
               render='true'
               href='/listagem-departamentos'
               label='Departamentos'
-            />
+            /> */}
             <NavbarItem
               render='true'
               href='/listagem-vendas'
               label='Vendas'
             />
-            
+
           </ul>
         </div> 
-        <a href="./tela-login"><button>sair</button> </a>
+        <button type="button" className="btn btn-danger">Sair</button>
                     
       </div>
     </div>

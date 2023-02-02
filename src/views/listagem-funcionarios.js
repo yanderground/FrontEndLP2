@@ -97,7 +97,7 @@ function ListagemFuncionarios() {
             <div className='bs-component'>
               <button
                 type='button'
-                className='btn btn-warning'
+                className='btn btn-warning me-2'
                 onClick={() => cadastrar(0)}
               >
                 Novo Funcionário
@@ -105,7 +105,7 @@ function ListagemFuncionarios() {
 
               <button
                 type='button'
-                className='btn btn-warning'
+                className='btn btn-warning me-2'
                 onClick={() => cadastrar(1)}
               >
                 Novo Gerente

@@ -94,7 +94,7 @@ function ListagemPedidos() {
                         <button
                             onClick={() => excluir(dado.id)}
                             type='button'
-                            class="btn btn-primary"
+                            className="btn btn-primary"
                         >
                         Mais Detalhes
                         </button>

@@ -7,8 +7,8 @@ function TelaLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const cadastrar = () => {
-    navigate(`/listagem-funcionarios`);
+  const logar = () => {
+    navigate(`/tela-inicio`);
   };
 
   return (
@@ -40,7 +40,7 @@ function TelaLogin() {
             </div>
 
             <div className="container-login-form-btn">
-              <button className="login-form-btn" onClick={() => cadastrar()}>Login</button>
+              <button className="login-form-btn" onClick={() => logar()}>Login</button>
             </div>
 
           </form>

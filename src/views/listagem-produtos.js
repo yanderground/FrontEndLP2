@@ -42,6 +42,18 @@ useEffect(() => {
   const editar = (id) => {
     navigate(`/cadastro-produto/${id}`);
   };
+
+  const navegarDep = () => {
+    navigate(`/listagem-departamentos`);
+  };
+
+  const navegarCor = () => {
+    navigate(`/listagem-cores`);
+  };
+
+  const navegarTam = () => {
+    navigate(`/listagem-tamanhos`);
+  };
   
   
   React.useEffect(() => {
@@ -148,6 +160,30 @@ useEffect(() => {
                 </tbody>
               </table>{' '}
             </div>
+            <div className="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
+              <button
+                  type='button'
+                  className='btn btn-secondary btn-group me-2'
+                  onClick={() => navegarDep()}
+                >
+                  Departamentos
+                </button>
+                <button
+                  type='button'
+                  className='btn btn-secondary btn-group me-2'
+                  onClick={() => navegarCor()}
+                >
+                  Cores
+                </button>
+                <button
+                  type='button'
+                  className='btn btn-secondary btn-group me-2'
+                  onClick={() => navegarTam()}
+                >
+                  Tamanhos
+                </button>
+            </div>
+            
           </div>
         </div>
       </Card>
