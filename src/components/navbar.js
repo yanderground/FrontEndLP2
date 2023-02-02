@@ -13,7 +13,7 @@ function Navbar(props) {
       
       <div className='container'>
       
-        <a href='/' className='navbar-brand'>
+        <a href='/tela-inicio' className='navbar-brand'>
           Meu Sistema
         </a>
         <button
@@ -34,18 +34,8 @@ function Navbar(props) {
           <ul className='navbar-nav'>
             <NavbarItem
               render='true'
-              href='/tela-inicio'
-              label='Início'
-            />
-            <NavbarItem
-              render='true'
               href='/listagem-funcionarios'
               label='Funcionários'
-            />
-            <NavbarItem
-              render='true'
-              href='/listagem-pedidos'
-              label='Pedidos'
             />
             <NavbarItem
               render='true'
@@ -59,8 +49,18 @@ function Navbar(props) {
             />
             <NavbarItem
               render='true'
+              href='/listagem-vendas'
+              label='Vendas'
+            />
+            <NavbarItem
+              render='true'
               href='/listagem-clientes'
               label='Clientes'
+            />
+              <NavbarItem
+              render='true'
+              href='/listagem-pedidos'
+              label='Pedidos'
             />
             {/* <NavbarItem
               render='true'
@@ -77,16 +77,9 @@ function Navbar(props) {
               href='/listagem-departamentos'
               label='Departamentos'
             /> */}
-            <NavbarItem
-              render='true'
-              href='/listagem-vendas'
-              label='Vendas'
-            />
-
           </ul>
         </div> 
-        <button type="button" className="btn btn-danger">Sair</button>
-                    
+        <a href='/'><button type="button" className="btn btn-danger" >Sair</button></a> 
       </div>
     </div>
   );
