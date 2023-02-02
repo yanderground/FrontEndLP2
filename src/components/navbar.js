@@ -13,7 +13,7 @@ function Navbar(props) {
       
       <div className='container'>
       
-        <a href='/' className='navbar-brand'>
+        <a href='/tela-login' className='navbar-brand'>
           Meu Sistema
         </a>
         <button
@@ -85,7 +85,7 @@ function Navbar(props) {
             
           </ul>
         </div> 
-        <a href="./tela-inicial"><button>sair</button> </a>
+        <a href="./tela-login"><button>sair</button> </a>
                     
       </div>
     </div>
