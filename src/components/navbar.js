@@ -34,7 +34,7 @@ function Navbar(props) {
           <ul className='navbar-nav'>
             <NavbarItem
               render='true'
-              href='/tela-inicial'
+              href='/tela-login'
               label='Início'
             />
             <NavbarItem

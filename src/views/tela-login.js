@@ -3,7 +3,7 @@ import { useNavigate} from 'react-router-dom';
 
 import "../styles.css";
 
-function TelaInicial() {
+function TelaLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -50,4 +50,4 @@ function TelaInicial() {
   );
 }
 
-export default TelaInicial;
+export default TelaLogin;

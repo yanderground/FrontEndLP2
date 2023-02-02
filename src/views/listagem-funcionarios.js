@@ -57,7 +57,7 @@ function ListagemFuncionarios() {
   async function excluir(id,i) {
     let data = JSON.stringify({ id });
     let url;
-    if(i == 0){
+    if(i === 0){
       url = `${baseURL}/${id}`;
     } else {
       url = `${baseURL2}/${id}`;
@@ -68,7 +68,7 @@ function ListagemFuncionarios() {
       })
       .then(function (response) {
         mensagemSucesso(`Exclusão realizada com sucesso!`);
-        if(i == 0){
+        if(i === 0){
           setDados(
             dados.filter((dado) => {
               return dado.id !== id;
