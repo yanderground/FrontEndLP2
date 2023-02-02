@@ -155,7 +155,7 @@ function RealizarVenda() {
                   </option>
                   {dadosProdutos.map((dado) => (
                     <option key={dado.id} value={dado.id}>
-                      {dado.nome}
+                      {dado.descricao}
                     </option>
                   ))}
                 </select>
@@ -174,7 +174,7 @@ function RealizarVenda() {
                   </option>
                   {dadosClientes.map((dado) => (
                     <option key={dado.id} value={dado.id}>
-                      {dado.nome}
+                      {dado.cpf}
                     </option>
                   ))}
                 </select>

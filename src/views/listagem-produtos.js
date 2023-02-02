@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Card from '../components/card';
 
@@ -17,7 +17,6 @@ import axios from 'axios';
 import { BASE_URL_2 } from '../config/axios';
 
 const baseURL = `${BASE_URL_2}/produtos`;
-let cor = '';
 
 function ListagemProdutos() {
   const navigate = useNavigate();
@@ -66,19 +65,18 @@ useEffect(() => {
     axios.get(`${BASE_URL_2}/tamanhos`).then((response) => {
       setDadosTamanhos(response.data);
     });
-    //axios.get(`${BASE_URL_2}/cores`).then((response) => {
-    //  setDadosCores(response.data);
-    //});
+    axios.get(`${BASE_URL_2}/cores`).then((response) => {
+      setDadosCores(response.data);
+    });
   }, []);
   
-  function buscar(id){
-    let data = JSON.stringify({ id });
-    let url = `${BASE_URL_2}/cores/${id}`;
-      axios.get(url).then((response) => {
-        cor = response.data.titulo;
-        // setDadosCores(response.data)
-      });
-  }
+  // function buscar(id){
+  //   let data = JSON.stringify({ id });
+  //   let url = `${BASE_URL_2}/cores/${data}`;
+  //     axios.get(url).then((response) => {
+  //       setTitulo(response.data.titulo)
+  //     });
+  // }
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
@@ -119,11 +117,8 @@ useEffect(() => {
               <table className='table table-hover'>
                 <thead>
                   <tr>
-                    <th scope='col'>Nome</th>
-                    <th scope='col'>Departamento</th>
-                    <th scope='col'>Cor</th>
-                    <th scope='col'>Tamanho</th>
-                    <th scope='col'>Genero</th>
+                    <th scope='col'>Descrição</th>
+                    <th scope='col'>Preço Unitário</th>
                     <th scope='col'>Quantidade</th>
                     <th scope='col'>Ações</th>
                   </tr>
@@ -132,11 +127,8 @@ useEffect(() => {
                   {dados?.map((dado) => (
                     <>{}
                     <tr key={dado.id}>
-                      <td>{dado.nome}</td>
-                      <td>{dado.idDepartamento}</td>                     
-                      <td>{buscar(dado.idCor)}</td>
-                      <td>{dado.idTamanho}</td>
-                      <td>{dado.idGenero}</td>
+                      <td>{dado.descricao}</td>
+                      <td>R${dado.preco}0</td>
                       <td>{dado.quantidade}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>

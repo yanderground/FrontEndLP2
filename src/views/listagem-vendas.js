@@ -88,7 +88,7 @@ function ListagemVendas() {
                   {dados.map((dado) => (
                     <tr key={dado.id}>
                       <td>Venda: {dado.id}</td>
-                      <td>R${dado.valorTotal}</td>
+                      <td>R${dado.valorTotal}0</td>
                       <td>{dado.dataVenda}</td>
                       <td>
                       <button
