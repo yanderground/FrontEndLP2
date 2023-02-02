@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
 
+import ListagemPedidos from './views/listagem-pedidos';
 import CadastroPedido from './views/cadastro-pedido';
 
 import CadastroGerente from './views/cadastro-gerente';
@@ -27,14 +28,22 @@ import ListagemDepartamentos from './views/listagem-departamentos';
 import CadastroDepartamento from './views/cadastro-departamento';
 
 import RealizarVenda from './views/realizar-venda';
+import ListagemVendas from './views/listagem-vendas';
+
 import TelaInicial from './views/tela-inicial';
+
 
 function Rotas(props) {
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/cadastro-pedido/:idParam' element={<CadastroPedido />} />
+        <Route path='/cadastro-pedido/' element={<CadastroPedido />} />
+        <Route path='/listagem-pedidos' element={<ListagemPedidos />} />
+
+        <Route path='/realizar-venda/:idParam' element={<RealizarVenda />} />
         <Route path='/realizar-venda' element={<RealizarVenda />} />
+        <Route path='/listagem-vendas' element={<ListagemVendas/>} />
 
         <Route path='/cadastro-produto/:idParam' element={<CadastroProduto />} />
         <Route path='/cadastro-produto/' element={<CadastroProduto />} />

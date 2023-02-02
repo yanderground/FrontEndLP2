@@ -11,14 +11,14 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 import '../custom.css';
 
 import axios from 'axios';
-import { BASE_URL_2, BASE_URL_3 } from '../config/axios';
+import { BASE_URL_2 } from '../config/axios';
 
 function CadastroProduto() {
   const { idParam } = useParams();
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL_3}/produtos`;
+  const baseURL = `${BASE_URL_2}/produtos`;
 
   const [id, setId] = useState(0);
   const [nome, setNome] = useState('');
@@ -29,6 +29,7 @@ function CadastroProduto() {
   const [idGenero, setIdGenero] = useState(0);
   const [idTamanho, setIdTamanho] = useState(0);
   const [idCor, setIdCor] = useState(0);
+  const [descricao, setDescricao] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
@@ -43,6 +44,7 @@ function CadastroProduto() {
       setIdGenero(0);
       setIdTamanho(0);
       setIdCor(0);
+      setDescricao('');
     } else {
       setId(dados.id);
       setNome(dados.nome);
@@ -53,6 +55,7 @@ function CadastroProduto() {
       setIdGenero(dados.idGenero);
       setIdTamanho(dados.idTamanho);
       setIdCor(dados.idCor);
+      setDescricao(dados.descricao);
     }
   }
 
@@ -258,7 +261,7 @@ function CadastroProduto() {
                   <option key='0' value='0'>
                     {' '}
                   </option>
-                  {dadosTamanhos.map((dado) => (
+                  {dadosCores.map((dado) => (
                     <option key={dado.id} value={dado.id}>
                       {dado.titulo}
                     </option>

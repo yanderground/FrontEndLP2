@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import Card from '../components/card';
 
@@ -14,34 +14,36 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 import axios from 'axios';
-import { BASE_URL_2, BASE_URL_3 } from '../config/axios';
+import { BASE_URL_2 } from '../config/axios';
 
-const baseURL = `${BASE_URL_3}/produtos`;
+const baseURL = `${BASE_URL_2}/produtos`;
+let cor = '';
 
 function ListagemProdutos() {
   const navigate = useNavigate();
+  
+  const [dados, setDados] = React.useState(null);
+  const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
+  const [dadosGeneros, setDadosGeneros] = React.useState(null);
+  const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
+  const [dadosCores, setDadosCores] = React.useState('');
 
-  React.useEffect(() => {
+useEffect(() => {
     axios.get(baseURL).then((response) => {
       setDados(response.data);
     });
   }, []);
 
+  
   const cadastrar = () => {
-      navigate(`/cadastro-produto`);
+    navigate(`/cadastro-produto`);
   };
-
+  
   const editar = (id) => {
-      navigate(`/cadastro-produto/${id}`);
+    navigate(`/cadastro-produto/${id}`);
   };
-
-  const [dados, setDados] = React.useState(null);
-  const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
-  const [dadosGeneros, setDadosGeneros] = React.useState(null);
-  const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
-  const [dadosCores, setDadosCores] = React.useState(null);
-
-
+  
+  
   React.useEffect(() => {
     axios.get(`${BASE_URL_2}/departamentos`).then((response) => {
       setDadosDepartamentos(response.data);
@@ -52,17 +54,19 @@ function ListagemProdutos() {
     axios.get(`${BASE_URL_2}/tamanhos`).then((response) => {
       setDadosTamanhos(response.data);
     });
-    axios.get(`${BASE_URL_2}/cores`).then((response) => {
-      setDadosCores(response.data);
-    });
+    //axios.get(`${BASE_URL_2}/cores`).then((response) => {
+    //  setDadosCores(response.data);
+    //});
   }, []);
-
+  
   function buscar(id){
-      axios.get(`${BASE_URL_2}/cores/${id}`).then((response) => {
-        setDadosCores(response.data);
+    let data = JSON.stringify({ id });
+    let url = `${BASE_URL_2}/cores/${id}`;
+      axios.get(url).then((response) => {
+        cor = response.data.titulo;
+        // setDadosCores(response.data)
       });
   }
-  
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
@@ -84,8 +88,7 @@ function ListagemProdutos() {
       });
   }
 
-
-  if (!dados || !dadosDepartamentos) return null;
+ if (!dados) return null;
 
   return (
     <div className='container'>
@@ -114,11 +117,12 @@ function ListagemProdutos() {
                   </tr>
                 </thead>
                 <tbody>
-                  {dados.map((dado) => (
+                  {dados?.map((dado) => (
+                    <>{}
                     <tr key={dado.id}>
                       <td>{dado.nome}</td>
-                      <td>{dado.idDepartamento}</td>
-                      <td>{dado.idCor}</td>
+                      <td>{dado.idDepartamento}</td>                     
+                      <td>{buscar(dado.idCor)}</td>
                       <td>{dado.idTamanho}</td>
                       <td>{dado.idGenero}</td>
                       <td>{dado.quantidade}</td>
@@ -139,6 +143,7 @@ function ListagemProdutos() {
                         </Stack>
                       </td>
                     </tr>
+                    </>
                   ))}
                 </tbody>
               </table>{' '}
