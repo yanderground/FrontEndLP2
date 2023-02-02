@@ -44,7 +44,7 @@ function Navbar(props) {
             />
             <NavbarItem
               render='true'
-              href='/cadastro-pedido'
+              href='/listagem-pedidos'
               label='Pedidos'
             />
             <NavbarItem
@@ -79,7 +79,7 @@ function Navbar(props) {
             />
             <NavbarItem
               render='true'
-              href='/realizar-venda'
+              href='/listagem-vendas'
               label='Vendas'
             />
             
