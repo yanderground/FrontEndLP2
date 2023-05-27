@@ -14,9 +14,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 //import EditIcon from '@mui/icons-material/Edit';
 
 import axios from 'axios';
-import { BASE_URL_3 } from '../config/axios';
+import { BASE_URL } from '../config/axios';
 
-const baseURL = `${BASE_URL_3}/Pedidos`;
+const baseURL = `${BASE_URL}/Pedidos`;
 
 function ListagemPedidos() {
   const navigate = useNavigate();
@@ -28,7 +28,7 @@ function ListagemPedidos() {
   }, []);
 
   const cadastrar = () => {
-      navigate(`/realizar-Pedido`);
+      navigate(`/cadastro-pedido`);
   };
 
 //   const editar = (id) => {

@@ -11,14 +11,14 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 import '../custom.css';
 
 import axios from 'axios';
-import { BASE_URL_2 } from '../config/axios';
+import { BASE_URL } from '../config/axios';
 
 function CadastroTamanho(){
   const { idParam } = useParams();
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL_2}/tamanhos`;
+  const baseURL = `${BASE_URL}/tamanhos`;
   
   const [id, setId] = useState(0);
   const [titulo, setTitulo] = useState('');

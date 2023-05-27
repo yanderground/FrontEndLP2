@@ -11,14 +11,14 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 import '../custom.css';
 
 import axios from 'axios';
-import { BASE_URL_2 } from '../config/axios';
+import { BASE_URL } from '../config/axios';
 
 function CadastroCor(){
   const { idParam } = useParams();
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL_2}/cores`;
+  const baseURL = `${BASE_URL}/cores`;
   
   const [id, setId] = useState(0);
   const [titulo, setTitulo] = useState('');

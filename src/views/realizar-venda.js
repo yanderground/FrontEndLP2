@@ -11,14 +11,14 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 import '../custom.css';
 
 import axios from 'axios';
-import { BASE_URL, BASE_URL_2, BASE_URL_3 } from '../config/axios';
+import { BASE_URL } from '../config/axios';
 
 function RealizarVenda() {
   const { idParam } = useParams();
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL_3}/vendas`;
+  const baseURL = `${BASE_URL}/vendas`;
 
   const [id, setId] = useState(0);
   const [valorTotal, setValorTotal] = useState(0);
@@ -112,7 +112,7 @@ function RealizarVenda() {
   const [dadosMetodoPagamentos, setDadosMetodoPagamentos] = React.useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL_3}/metodoPagamentos`).then((response) => {
+    axios.get(`${BASE_URL}/metodoPagamentos`).then((response) => {
       setDadosMetodoPagamentos(response.data);
     });
   }, []);
@@ -120,7 +120,7 @@ function RealizarVenda() {
   const [dadosProdutos, setDadosProdutos] = React.useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL_2}/produtos`).then((response) => {
+    axios.get(`${BASE_URL}/produtos`).then((response) => {
       setDadosProdutos(response.data);
     });
   }, []);

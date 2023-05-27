@@ -1,161 +1,229 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import Stack from '@mui/material/Stack';
 
 import Card from '../components/card';
 import FormGroup from '../components/form-group';
 
-import { mensagemSucesso } from '../components/toastr';
+import { mensagemSucesso, mensagemErro } from '../components/toastr';
+
 import '../custom.css';
 
-class CadastroPedido extends React.Component {
-  state = {
-    produto: '',
-    tamanho: '',
-    genero: '',
-    cor: '',
-    quantidade: '',
-    minimo: '',
-    fornecedor: '',
-    dataPedido: '',
-    dataEntrega: ''
+import axios from 'axios';
+import { BASE_URL } from '../config/axios';
+
+function CadastrarPedido() {
+  const { idParam } = useParams();
+
+  const navigate = useNavigate();
+
+  const baseURL = `${BASE_URL}/pedidos`;
+
+  const [id, setId] = useState(0);
+  const [dataPedido, setDataPedido] = useState(0);
+  const [dataEntrega, setDataEntrega] = useState(0);
+  const [idGerente, setIdGerente] = useState(0);
+  const [idFornecedor, setIdFornecedor] = useState(0);
+  const [idProduto, setIdProduto] = useState(0);
+
+  const [dados, setDados] = React.useState([]);
+
+  function inicializar() {
+    if (idParam == null) {
+      setId(0);
+      setIdProduto(0);
+      setIdGerente(0);
+      setIdFornecedor(0);
+      setDataEntrega('');
+      setDataPedido('');
+    } else {
+      setId(dados.id);
+      setIdProduto(dados.idProduto);
+      setIdGerente(dados.idGerente);
+      setIdFornecedor(dados.idFornecedor);
+      setDataEntrega(dados.dataEntrega);
+      setDataPedido(dados.dataPedido);
+    }
+  }
+
+  async function salvar() {
+    let data = { id, dataEntrega, dataPedido, idGerente, idFornecedor, idProduto };
+    data = JSON.stringify(data);
+    if (idParam == null) {
+      await axios
+        .post(baseURL, data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(function (response) {
+          mensagemSucesso(`Pedido relizada com sucesso!`);
+          navigate(`/listagem-Pedidos`);
+        })
+        .catch(function (error) {
+          mensagemErro(error.response.data);
+        });
+    } else {
+      await axios
+        .put(`${baseURL}/${idParam}`, data, {
+          headers: { 'Content-Type': 'application/json' },
+        })
+        .then(function (response) {
+          mensagemSucesso(`Pedido ${id} alterado com sucesso!`);
+          navigate(`/listagem-Pedidos`);
+        })
+        .catch(function (error) {
+          mensagemErro(error.response.data);
+        });
+    }
+  }
+
+  async function buscar() {
+    await axios.get(`${baseURL}/${idParam}`).then((response) => {
+      setDados(response.data);
+    });
+    setId(dados.id);
+    setDataEntrega(dados.dataEntrega);
+    setDataPedido(dados.dataPedido);
+    setIdGerente(dados.idGerente);
+    setIdFornecedor(dados.idFornecedor);
+    setIdProduto(dados.idProduto);
+  }
+
+   const cadastrarFornecedor = () => {
+    navigate(`/cadastro-fornecedor`);
   };
 
-  cadastrar = () => {
-    mensagemSucesso(`Pedido ${this.state.nome} cadastrado com sucesso!`);
-  };
+  const [dadosGerentes, setDadosGerentes] = React.useState(null);
 
-  cancelar = () => {};
+  useEffect(() => {
+    axios.get(`${BASE_URL}/gerentes`).then((response) => {
+      setDadosGerentes(response.data);
+    });
+  }, []);
 
-  render() {
-    return (
-      <div className='container'>
-        <Card title='Cadastro de Pedidos'>
-          <div className='row'>
-            <div className='col-lg-12'>
-              <div className='bs-component'>
+  const [dadosFornecedores, setDadosFornecedors] = React.useState(null);
 
-              <FormGroup label="Produto: " htmlFor='inputProduto'>
-                  <select name="produto" id="inputproduto">
-                    <option value="Camisa Nike dryfit">Camisa Nike dryfit</option>
-                  </select>
+  useEffect(() => {
+    axios.get(`${BASE_URL}/fornecedores`).then((response) => {
+      setDadosFornecedors(response.data);
+    });
+  }, []);
+
+  const [dadosMetodoPagamentos, setDadosMetodoPagamentos] = React.useState(null);
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/metodoPagamentos`).then((response) => {
+      setDadosMetodoPagamentos(response.data);
+    });
+  }, []);
+
+  const [dadosProdutos, setDadosProdutos] = React.useState(null);
+
+  useEffect(() => {
+    axios.get(`${BASE_URL}/produtos`).then((response) => {
+      setDadosProdutos(response.data);
+    });
+  }, []);
+
+  useEffect(() => {
+    buscar(); // eslint-disable-next-line
+  }, [id]);
+
+  if (!dados) return null;
+  if (!dadosGerentes) return null;
+  if (!dadosFornecedores) return null;
+  if (!dadosProdutos) return null;
+
+  return (
+    <div className='container'>
+      <Card title='Realizar Pedidos'>
+        <div className='row'>
+          <div className='col-lg-12'>
+            <div className='bs-component'>
+              
+            <FormGroup label='Produto: *' htmlFor='selectProduto'>
+                <select
+                  className='form-select'
+                  id='selectProduto'
+                  name='idProduto'
+                  value={idProduto}
+                  onChange={(e) => setIdProduto(e.target.value)}
+                >
+                  <option key='0' value='0'>
+                    {' '}
+                  </option>
+                  {dadosProdutos.map((dado) => (
+                    <option key={dado.id} value={dado.id}>
+                      {dado.descricao}
+                    </option>
+                  ))}
+                </select>
+              </FormGroup>
+
+              <FormGroup label='Fornecedor: *' htmlFor='selectFornecedor'>
+                <select
+                  className='form-select'
+                  id='selectFornecedor'
+                  name='idFornecedor'
+                  value={idFornecedor}
+                  onChange={(e) => setIdFornecedor(e.target.value)}
+                >
+                  <option key='0' value='0'>
+                    {''}
+                  </option>
+                  {dadosFornecedores.map((dado) => (
+                    <option key={dado.id} value={dado.id}>
+                      {dado.nome}
+                    </option>
+                  ))}
+                </select>
+              </FormGroup>
+              
+              <FormGroup label='Data do Pedido: *' htmlFor='inputDataPedido'>
+                <input
+                  type='date'
+                  className='form-control'
+                  id='inputDataPedido'
+                  name='dataPedido'
+                  value={dataPedido}
+                  onChange={(e) => setDataPedido(e.target.value)}
+                >
+                </input>
+              </FormGroup>
+
+              <FormGroup label='Data da Entrega: *' htmlFor='inputDataEntrega'>
+                <input
+                  type='date'
+                  id='inputDataEntrega'
+                  value={dataEntrega}
+                  className='form-control'
+                  name='dataEntrega'
+                  onChange={(e) => setDataEntrega(e.target.value)}
+                />
                 </FormGroup>
-                <br/>
-                
-                <FormGroup label="Tamanho: " htmlFor='inputTamanho'>
-                  <select name="tamanho" id="inputTamanho">
-                    <option value="p">P</option>
-                    <option value="m">M</option>
-                    <option value="g">G</option>
-                    <option value="gg">GG</option>
-                  </select>
-                </FormGroup>
-                <br/>
 
-                <FormGroup label="Gênero: " htmlFor='inputGenero'>
-                  <select name="genero" id="inputGenero">
-                    <option value="masculino">masculino</option>
-                    <option value="feminino">feminino</option>
-                    </select>
-                </FormGroup>
-                <br/>
-
-                <FormGroup label="Cor: " htmlFor='inputCor'>
-                  <select name="cor" id="imputCor">
-                    <option value="azul">azul</option>
-                    <option value="verde">verde</option>
-                    <option value="amarelo">amarelo</option>
-                    </select>
-                </FormGroup>
-                <br/>
-
-                <FormGroup label='Quantidade: *' htmlFor='inputQuantidade'>
-                  <input
-                    type='text'
-                    id='inputQuantidade'
-                    value={this.state.quantidade}
-                    className='form-control'
-                    name='quantidade'
-                    onChange={(e) =>
-                      this.setState({ quantidade: e.target.value })
-                    }
-                  />
-                </FormGroup>
-
-                <FormGroup label='Mínimo: *' htmlFor='inputMínimo'>
-                  <input
-                    type='text'
-                    id='inputMínimo'
-                    value={this.state.minimo}
-                    className='form-control'
-                    name='minimo'
-                    onChange={(e) =>
-                      this.setState({ minimo: e.target.value })
-                    }
-                  />
-                </FormGroup>
-
-                <br/>
-                <FormGroup label="Fornecedor: " htmlFor='inputFornecedor'>
-                  <select name="Fornecedor" id="imputFornecedor">
-                    <option value="azul">Nike BR</option>
-                    </select>
-                </FormGroup>
-                <br/>
-                
-                <FormGroup label='Data do Pedido: *' htmlFor='inputDataPedido'>
-                  <input
-                    type='date'
-                    id='inputDataPedido'
-                    value={this.state.dataPedido}
-                    className='form-control'
-                    name='dataPedido'
-                    onChange={(e) =>
-                      this.setState({ dataPedido: e.target.value })
-                    }
-                  />
-                </FormGroup>
-
-                <FormGroup label='Data da Entrega: *' htmlFor='inputDataEntrega'>
-                  <input
-                    type='date'
-                    id='inputDataEntrega'
-                    value={this.state.dataEntrega}
-                    className='form-control'
-                    name='dataEntrega'
-                    onChange={(e) =>
-                      this.setState({ dataEntrega: e.target.value })
-                    }
-                  />
-                </FormGroup>
-
-
-                
-                
-
-                <Stack spacing={1} padding={1} direction='row'>
-                  <button
-                    onClick={this.cadastrar}
-                    type='button'
-                    className='btn btn-success'
-                  >
-                    Salvar
-                  </button>
-                  <button
-                    onClick={this.cancelar}
-                    type='button'
-                    className='btn btn-danger'
-                  >
-                    Cancelar
-                  </button>
-                </Stack>
-              </div>
+              <Stack spacing={1} padding={1} direction='row'>
+                <button
+                  onClick={salvar}
+                  type='button'
+                  className='btn btn-success'
+                >
+                  Cadastrar Pedido
+                </button>
+                <button
+                  onClick={inicializar}
+                  type='button'
+                  className='btn btn-danger'
+                >
+                  Cancelar
+                </button>
+              </Stack>
             </div>
           </div>
-        </Card>
-      </div>
-    );
-  }
+        </div>
+      </Card>
+    </div>
+  );
 }
 
-export default CadastroPedido;
+export default CadastrarPedido;

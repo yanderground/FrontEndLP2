@@ -14,7 +14,7 @@ function Navbar(props) {
       <div className='container'>
       
         <a href='/tela-inicio' className='navbar-brand'>
-          Meu Sistema
+          Grenciador de Vendas
         </a>
         <button
           className='navbar-toggler'

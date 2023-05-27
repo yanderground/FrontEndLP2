@@ -14,9 +14,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 import axios from 'axios';
-import { BASE_URL_2 } from '../config/axios';
+import { BASE_URL } from '../config/axios';
 
-const baseURL = `${BASE_URL_2}/tamanhos`;
+const baseURL = `${BASE_URL}/tamanhos`;
 
 function ListagemTamanhos() {
   const navigate = useNavigate();

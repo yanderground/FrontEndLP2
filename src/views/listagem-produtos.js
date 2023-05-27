@@ -14,18 +14,18 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 
 import axios from 'axios';
-import { BASE_URL_2 } from '../config/axios';
+import { BASE_URL } from '../config/axios';
 
-const baseURL = `${BASE_URL_2}/produtos`;
+const baseURL = `${BASE_URL}/produtos`;
 
 function ListagemProdutos() {
   const navigate = useNavigate();
   
   const [dados, setDados] = React.useState(null);
-  const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
-  const [dadosGeneros, setDadosGeneros] = React.useState(null);
-  const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
-  const [dadosCores, setDadosCores] = React.useState('');
+  // const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
+  // const [dadosGeneros, setDadosGeneros] = React.useState(null);
+  // const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
+  // const [dadosCores, setDadosCores] = React.useState('');
 
 useEffect(() => {
     axios.get(baseURL).then((response) => {
@@ -55,24 +55,24 @@ useEffect(() => {
   };
   
   
-  React.useEffect(() => {
-    axios.get(`${BASE_URL_2}/departamentos`).then((response) => {
-      setDadosDepartamentos(response.data);
-    });
-    axios.get(`${BASE_URL_2}/generos`).then((response) => {
-      setDadosGeneros(response.data);
-    });
-    axios.get(`${BASE_URL_2}/tamanhos`).then((response) => {
-      setDadosTamanhos(response.data);
-    });
-    axios.get(`${BASE_URL_2}/cores`).then((response) => {
-      setDadosCores(response.data);
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   axios.get(`${BASE_URL}/departamentos`).then((response) => {
+  //     setDadosDepartamentos(response.data);
+  //   });
+  //   axios.get(`${BASE_URL}/generos`).then((response) => {
+  //     setDadosGeneros(response.data);
+  //   });
+  //   axios.get(`${BASE_URL}/tamanhos`).then((response) => {
+  //     setDadosTamanhos(response.data);
+  //   });
+  //   axios.get(`${BASE_URL}/cores`).then((response) => {
+  //     setDadosCores(response.data);
+  //   });
+  // }, []);
   
   // function buscar(id){
   //   let data = JSON.stringify({ id });
-  //   let url = `${BASE_URL_2}/cores/${data}`;
+  //   let url = `${BASE_URL}/cores/${data}`;
   //     axios.get(url).then((response) => {
   //       setTitulo(response.data.titulo)
   //     });

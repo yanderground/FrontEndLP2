@@ -19,7 +19,6 @@ import { BASE_URL } from '../config/axios';
 const baseURL = `${BASE_URL}/funcionarios`;
 const baseURL2 = `${BASE_URL}/gerentes`;
 
-
 function ListagemFuncionarios() {
   const navigate = useNavigate();
 

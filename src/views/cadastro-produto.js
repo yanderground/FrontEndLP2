@@ -11,14 +11,14 @@ import { mensagemSucesso, mensagemErro } from '../components/toastr';
 import '../custom.css';
 
 import axios from 'axios';
-import { BASE_URL_2 } from '../config/axios';
+import { BASE_URL } from '../config/axios';
 
 function CadastroProduto() {
   const { idParam } = useParams();
 
   const navigate = useNavigate();
 
-  const baseURL = `${BASE_URL_2}/produtos`;
+  const baseURL = `${BASE_URL}/produtos`;
 
   const [id, setId] = useState(0);
   const [nome, setNome] = useState('');
@@ -107,7 +107,7 @@ function CadastroProduto() {
   const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL_2}/departamentos`).then((response) => {
+    axios.get(`${BASE_URL}/departamentos`).then((response) => {
       setDadosDepartamentos(response.data);
     });
   }, []);
@@ -115,7 +115,7 @@ function CadastroProduto() {
   const [dadosGeneros, setDadosGeneros] = React.useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL_2}/generos`).then((response) => {
+    axios.get(`${BASE_URL}/generos`).then((response) => {
       setDadosGeneros(response.data);
     });
   }, []);
@@ -123,7 +123,7 @@ function CadastroProduto() {
   const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL_2}/tamanhos`).then((response) => {
+    axios.get(`${BASE_URL}/tamanhos`).then((response) => {
       setDadosTamanhos(response.data);
     });
   }, []);
@@ -131,7 +131,7 @@ function CadastroProduto() {
   const [dadosCores, setDadosCores] = React.useState(null);
 
   useEffect(() => {
-    axios.get(`${BASE_URL_2}/cores`).then((response) => {
+    axios.get(`${BASE_URL}/cores`).then((response) => {
       setDadosCores(response.data);
     });
   }, []);
