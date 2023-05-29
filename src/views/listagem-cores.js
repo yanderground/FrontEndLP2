@@ -84,7 +84,7 @@ function ListagemCores() {
                 <tbody>
                   {dados.map((dado) => (
                     <tr key={dado.id}>
-                      <td>{dado.titulo}</td>
+                      <td>{dado.nomeCor}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton

@@ -22,14 +22,14 @@ function CadastroProduto() {
 
   const [id, setId] = useState(0);
   const [nome, setNome] = useState('');
-  const [preco, setPreco] = useState(0);
-  const [qtdMax, setQtdMax] = useState(0);
-  const [qtdMin, setQtdMin] = useState(0);
+  const [precoUnitario, setPrecoUnitario] = useState(0.0);
+  const [quantidadeMax, setQuantidadeMax] = useState(0);
+  const [quantidadeMin, setQuantidadeMin] = useState(0);
+  const [quantidade, setQuantidade] = useState(0);
   const [idDepartamento, setIdDepartamento] = useState(0);
   const [idGenero, setIdGenero] = useState(0);
   const [idTamanho, setIdTamanho] = useState(0);
   const [idCor, setIdCor] = useState(0);
-  const [descricao, setDescricao] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
@@ -37,30 +37,30 @@ function CadastroProduto() {
     if (idParam == null) {
       setId(0);
       setNome('');
-      setPreco(0);
-      setQtdMax(0);
-      setQtdMin(0);
+      setPrecoUnitario(0);
+      setQuantidadeMax(0);
+      setQuantidadeMin(0);
+      setQuantidade(0);
       setIdDepartamento(0);
       setIdGenero(0);
       setIdTamanho(0);
       setIdCor(0);
-      setDescricao('');
     } else {
       setId(dados.id);
       setNome(dados.nome);
-      setPreco(dados.preco);
-      setQtdMax(dados.qtdMax);
-      setQtdMin(dados.qtdMin);
+      setPrecoUnitario(dados.precoUnitario);
+      setQuantidadeMax(dados.quantidadeMax);
+      setQuantidadeMin(dados.quantidadeMin);
+      setQuantidade(dados.quantidade);
       setIdDepartamento(dados.idDepartamento);
       setIdGenero(dados.idGenero);
       setIdTamanho(dados.idTamanho);
       setIdCor(dados.idCor);
-      setDescricao(dados.descricao);
     }
   }
 
   async function salvar() {
-    let data = { id, nome, preco, qtdMax, qtdMin, idDepartamento, idGenero, idTamanho, idCor };
+    let data = { id, nome, precoUnitario, quantidadeMax, quantidadeMin, quantidade, idDepartamento, idGenero, idTamanho, idCor };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -95,9 +95,10 @@ function CadastroProduto() {
     });
     setId(dados.id);
     setNome(dados.nome);
-    setPreco(dados.preco);
-    setQtdMax(dados.qtdMax);
-    setQtdMin(dados.qtdMin);
+    setPrecoUnitario(dados.precoUnitario);
+    setQuantidadeMax(dados.quantidadeMax);
+    setQuantidadeMin(dados.quantidadeMin);
+    setQuantidade(dados.quantidade);
     setIdDepartamento(dados.idDepartamento);
     setIdGenero(dados.idGenero);
     setIdTamanho(dados.idTamanho);
@@ -162,35 +163,35 @@ function CadastroProduto() {
                   onChange={(e) => setNome(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='preco: *' htmlFor='inputpreco'>
+              <FormGroup label='precoUnitario: *' htmlFor='inputprecoUnitario'>
                 <input
-                  type='text'
+                  type='number'
                   maxLength='11'
-                  id='inputpreco'
-                  value={preco}
+                  id='inputprecoUnitario'
+                  value={precoUnitario}
                   className='form-control'
-                  name='preco'
-                  onChange={(e) => setPreco(e.target.value)}
+                  name='precoUnitario'
+                  onChange={(e) => setPrecoUnitario(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='qtdMax: *' htmlFor='inputQtdMax'>
+              <FormGroup label='quantidadeMax: *' htmlFor='inputquantidadeMax'>
                 <input
-                  type='qtdMax'
-                  id='inputQtdMax'
-                  value={qtdMax}
+                  type='number'
+                  id='inputquantidadeMax'
+                  value={quantidadeMax}
                   className='form-control'
-                  name='qtdMax'
-                  onChange={(e) => setQtdMax(e.target.value)}
+                  name='quantidadeMax'
+                  onChange={(e) => setQuantidadeMax(e.target.value)}
                 />
               </FormGroup>
-              <FormGroup label='qtdMin:' htmlFor='inputQtdMin'>
+              <FormGroup label='quantidadeMin:' htmlFor='inputquantidadeMin'>
                 <input
-                  type='text'
-                  id='inputQtdMin'
-                  value={qtdMin}
+                  type='number'
+                  id='inputquantidadeMin'
+                  value={quantidadeMin}
                   className='form-control'
-                  name='qtdMin'
-                  onChange={(e) => setQtdMin(e.target.value)}
+                  name='quantidadeMin'
+                  onChange={(e) => setQuantidadeMin(e.target.value)}
                 />
               </FormGroup>
               <FormGroup label='Departamento: *' htmlFor='selectDepartamento'>
@@ -206,7 +207,7 @@ function CadastroProduto() {
                   </option>
                   {dadosDepartamentos.map((dado) => (
                     <option key={dado.id} value={dado.id}>
-                      {dado.titulo}
+                      {dado.nomeDepartamento}
                     </option>
                   ))}
                 </select>
@@ -225,7 +226,7 @@ function CadastroProduto() {
                   </option>
                   {dadosGeneros.map((dado) => (
                     <option key={dado.id} value={dado.id}>
-                      {dado.titulo}
+                      {dado.nomeGenero}
                     </option>
                   ))}
                 </select>
@@ -244,7 +245,7 @@ function CadastroProduto() {
                   </option>
                   {dadosTamanhos.map((dado) => (
                     <option key={dado.id} value={dado.id}>
-                      {dado.titulo}
+                      {dado.nomeTamanho}
                     </option>
                   ))}
                 </select>
@@ -263,7 +264,7 @@ function CadastroProduto() {
                   </option>
                   {dadosCores.map((dado) => (
                     <option key={dado.id} value={dado.id}>
-                      {dado.titulo}
+                      {dado.nomeCor}
                     </option>
                   ))}
                 </select>

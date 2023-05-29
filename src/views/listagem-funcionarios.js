@@ -116,7 +116,7 @@ function ListagemFuncionarios() {
                     <th scope='col'>Nome</th>
                     <th scope='col'>E-mail</th>
                     <th scope='col'>Telefone</th>
-                    <th scope='col'>CPF</th>
+                    <th scope='col'>Endereço</th>
                     <th scope='col'>Função</th>
                     <th scope='col'>Ações</th>
                   </tr>
@@ -127,7 +127,7 @@ function ListagemFuncionarios() {
                       <td>{dado.nome}</td>
                       <td>{dado.email}</td>
                       <td>{dado.telefone}</td>
-                      <td>{dado.cpf}</td>
+                      <td>{dado.logradouro} {dado.numero}, {dado.cidade}, {dado.uf}</td>
                       <td>Funcionário</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
@@ -152,7 +152,7 @@ function ListagemFuncionarios() {
                       <td>{dado2.nome}</td>
                       <td>{dado2.email}</td>
                       <td>{dado2.telefone}</td>
-                      <td>{dado2.cpf}</td>
+                      <td>{dado2.logradouro} {dado2.numero}, {dado2.cidade}, {dado2.uf}</td>
                       <td>Gerente</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>

@@ -26,7 +26,7 @@ function CadastroGerente(){
   const [email, setEmail] = useState('');
   const [telefone, setTelefone] = useState('');
   const [cep, setCep] = useState('');
-  const [estado, setEstado] = useState('');
+  const [uf, setUf] = useState('');
   const [cidade, setCidade] = useState('');
   const [logradouro, setLogradouro] = useState('');
   const [numero, setNumero] = useState('');
@@ -46,7 +46,7 @@ function CadastroGerente(){
       setEmail('');
       setTelefone('');
       setCep('');
-      setEstado('');
+      setUf('');
       setCidade('');
       setLogradouro('');
       setNumero('');
@@ -58,7 +58,7 @@ function CadastroGerente(){
       setEmail(dados.email);
       setTelefone(dados.telefone);
       setCep(dados.cep);
-      setEstado(dados.estado);
+      setUf(dados.uf);
       setCidade(dados.cidade);
       setLogradouro(dados.logradouro);
       setNumero(dados.numero);
@@ -67,7 +67,7 @@ function CadastroGerente(){
   }
 
   async function salvar() {
-    let data = { id, nome, cpf, email, telefone, cep, estado, cidade, logradouro, numero, complemento };
+    let data = { id, nome, cpf, email, telefone, cep, uf, cidade, logradouro, numero, complemento };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -108,7 +108,7 @@ function CadastroGerente(){
     setEmail(dados.email);
     setTelefone(dados.telefone);
     setCep(dados.cep);
-    setEstado(dados.estado);
+    setUf(dados.uf);
     setCidade(dados.cidade);
     setLogradouro(dados.logradouro);
     setNumero(dados.numero);
@@ -234,15 +234,15 @@ function CadastroGerente(){
                   />
                 </FormGroup>
 
-                <FormGroup label='Estado: *' htmlFor='inputEstado'>
+                <FormGroup label='uf: *' htmlFor='inputuf'>
                   <input
                     type='text'
-                    id='inputEstado'
-                    value={estado}
+                    id='inputuf'
+                    value={uf}
                     className='form-control'
-                    name='estado'
+                    name='uf'
                     onChange={(e) =>
-                      setEstado( e.target.value )
+                      setUf( e.target.value )
                     }
                   />
                 </FormGroup>
