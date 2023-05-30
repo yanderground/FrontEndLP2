@@ -16,19 +16,19 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
-const baseURL = `${BASE_URL}`;
+const baseURL = `${BASE_URL}/produtos`;
 
 function ListagemProdutos() {
   const navigate = useNavigate();
   
   const [dados, setDados] = React.useState(null);
-  const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
-  const [dadosGeneros, setDadosGeneros] = React.useState(null);
-  const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
-  const [dadosCores, setDadosCores] = React.useState('');
+  // const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
+  // const [dadosGeneros, setDadosGeneros] = React.useState(null);
+  // const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
+  // const [dadosCores, setDadosCores] = React.useState('');
 
 useEffect(() => {
-    axios.get(`${baseURL}/produtos`).then((response) => {
+    axios.get(baseURL).then((response) => {
       setDados(response.data);
     });
   }, []);
@@ -55,20 +55,20 @@ useEffect(() => {
   };
   
   
-  React.useEffect(() => {
-    axios.get(`${BASE_URL}/departamentos`).then((response) => {
-      setDadosDepartamentos(response.data);
-    });
-    axios.get(`${BASE_URL}/generos`).then((response) => {
-      setDadosGeneros(response.data);
-    });
-    axios.get(`${BASE_URL}/tamanhos`).then((response) => {
-      setDadosTamanhos(response.data);
-    });
-    axios.get(`${BASE_URL}/cores`).then((response) => {
-      setDadosCores(response.data);
-    });
-  }, []);
+  // React.useEffect(() => {
+  //   axios.get(`${BASE_URL}/departamentos`).then((response) => {
+  //     setDadosDepartamentos(response.data);
+  //   });
+  //   axios.get(`${BASE_URL}/generos`).then((response) => {
+  //     setDadosGeneros(response.data);
+  //   });
+  //   axios.get(`${BASE_URL}/tamanhos`).then((response) => {
+  //     setDadosTamanhos(response.data);
+  //   });
+  //   axios.get(`${BASE_URL}/cores`).then((response) => {
+  //     setDadosCores(response.data);
+  //   });
+  // }, []);
   
   // function buscar(id){
   //   let data = JSON.stringify({ id });
@@ -128,7 +128,7 @@ useEffect(() => {
                     <>{}
                     <tr key={dado.id}>
                       <td>{dado.nome}</td>
-                      <td>R${dado.precoUnitario}</td>
+                      <td>R${dado.precoUnitario}0</td>
                       <td>{dado.quantidade}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
