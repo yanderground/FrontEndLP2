@@ -25,6 +25,12 @@ function ListagemVendas() {
     axios.get(baseURL).then((response) => {
       setDados(response.data);
     });
+    axios.get(`${BASE_URL}/funcionarios`).then((response) => {
+      setDadosFuncionarios(response.data);
+    });
+    axios.get(`${BASE_URL}/clientes`).then((response) => {
+      setDadosClientes(response.data);
+    });
   }, []);
 
   const cadastrar = () => {
@@ -36,6 +42,8 @@ function ListagemVendas() {
 //   };
 
   const [dados, setDados] = React.useState(null);
+  const [dadosFuncionarios, setDadosFuncionarios] = React.useState(null);
+  const [dadosClientes, setDadosClientes] = React.useState(null);
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
@@ -59,6 +67,8 @@ function ListagemVendas() {
 
 
   if (!dados) return null;
+  if (!dadosFuncionarios) return null;
+  if (!dadosClientes) return null;
 
   return (
     <div className='container'>
@@ -80,6 +90,8 @@ function ListagemVendas() {
                     <th scope='col'>Venda</th>
                     <th scope='col'>Total</th>
                     <th scope='col'>Data</th>
+                    <th scope='col'>Funcionario</th>
+                    <th scope='col'>Cliente</th>
                     <th scope='col'>Detalhes</th>
                     <th scope='col'>Ações</th>
                   </tr>
@@ -90,6 +102,12 @@ function ListagemVendas() {
                       <td>Venda: {dado.id}</td>
                       <td>R${dado.precoTotal}</td>
                       <td>{dado.dataVenda}</td>
+                      <td>{dadosFuncionarios?.map((dadoFuncionario) => (
+                        (dado.idFuncionario == dadoFuncionario.id) ? dadoFuncionario.nome : null
+                      ))}</td>
+                      <td>{dadosClientes?.map((dadoCliente) => (
+                        (dado.idCliente == dadoCliente.id) ? dadoCliente.nome : null
+                      ))}</td>
                       <td>
                       <button
                             onClick={() => excluir(dado.id)}

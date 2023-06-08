@@ -22,10 +22,10 @@ function ListagemProdutos() {
   const navigate = useNavigate();
   
   const [dados, setDados] = React.useState(null);
-  // const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
-  // const [dadosGeneros, setDadosGeneros] = React.useState(null);
-  // const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
-  // const [dadosCores, setDadosCores] = React.useState('');
+  const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
+  const [dadosGeneros, setDadosGeneros] = React.useState(null);
+  const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
+  const [dadosCores, setDadosCores] = React.useState('');
 
 useEffect(() => {
     axios.get(baseURL).then((response) => {
@@ -55,28 +55,27 @@ useEffect(() => {
   };
   
   
-  // React.useEffect(() => {
-  //   axios.get(`${BASE_URL}/departamentos`).then((response) => {
-  //     setDadosDepartamentos(response.data);
-  //   });
-  //   axios.get(`${BASE_URL}/generos`).then((response) => {
-  //     setDadosGeneros(response.data);
-  //   });
-  //   axios.get(`${BASE_URL}/tamanhos`).then((response) => {
-  //     setDadosTamanhos(response.data);
-  //   });
-  //   axios.get(`${BASE_URL}/cores`).then((response) => {
-  //     setDadosCores(response.data);
-  //   });
-  // }, []);
+  React.useEffect(() => {
+    axios.get(`${BASE_URL}/departamentos`).then((response) => {
+      setDadosDepartamentos(response.data);
+    });
+    axios.get(`${BASE_URL}/generos`).then((response) => {
+      setDadosGeneros(response.data);
+    });
+    axios.get(`${BASE_URL}/tamanhos`).then((response) => {
+      setDadosTamanhos(response.data);
+    });
+    axios.get(`${BASE_URL}/cores`).then((response) => {
+      setDadosCores(response.data);
+    });
+  }, []);
   
-  // function buscar(id){
-  //   let data = JSON.stringify({ id });
-  //   let url = `${BASE_URL}/cores/${data}`;
-  //     axios.get(url).then((response) => {
-  //       setTitulo(response.data.titulo)
-  //     });
-  // }
+  function buscar(id){
+    let url = `${BASE_URL}/cores/${id}`;
+      axios.get(url).then((response) => {
+        return response.data.nomeCor
+      });
+  }
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
@@ -119,6 +118,8 @@ useEffect(() => {
                   <tr>
                     <th scope='col'>Descrição</th>
                     <th scope='col'>Preço Unitário</th>
+                    <th scope='col'>Cor</th>
+                    <th scope='col'>Tamanho</th>
                     <th scope='col'>Quantidade</th>
                     <th scope='col'>Ações</th>
                   </tr>
@@ -128,7 +129,13 @@ useEffect(() => {
                     <>{}
                     <tr key={dado.id}>
                       <td>{dado.nome}</td>
-                      <td>R${dado.precoUnitario}0</td>
+                      <td>R${dado.precoUnitario}</td>
+                      <td>{dadosCores?.map((dadoCor) => (
+                        (dado.idCor == dadoCor.id) ? dadoCor.nomeCor : null
+                      ))}</td>
+                      <td>{dadosTamanhos?.map((dadoTamanho) => (
+                        (dado.idTamanho == dadoTamanho.id) ? dadoTamanho.nomeTamanho : null
+                      ))}</td>
                       <td>{dado.quantidade}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>

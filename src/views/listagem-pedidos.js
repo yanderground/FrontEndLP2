@@ -16,7 +16,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
-const baseURL = `${BASE_URL}/Pedidos`;
+const baseURL = `${BASE_URL}/pedidos`;
 
 function ListagemPedidos() {
   const navigate = useNavigate();
