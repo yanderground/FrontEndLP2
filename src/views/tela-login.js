@@ -1,53 +1,81 @@
-import { useState } from "react";
-import { useNavigate} from 'react-router-dom';
+import React from 'react';
 
-import "../styles.css";
+import Stack from '@mui/material/Stack';
 
-function TelaLogin() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const navigate = useNavigate();
-  const logar = () => {
-    navigate(`/tela-inicio`);
+import Card from '../components/card';
+import FormGroup from '../components/form-group';
+
+import { mensagemSucesso } from '../components/toastr';
+
+import '../custom.css';
+
+class Login extends React.Component {
+  state = {
+    login: '',
+    senha: '',
   };
 
-  return (
-    <div className="container">
-      <div className="container-login">
-        <div className="wrap-login">
-          <form className="login-form">
-            <span className="login-form-title"> Bem-vindo </span>
+  logar = () => {
+    mensagemSucesso(`Usuário ${this.state.login} logado com sucesso!`);
+  };
 
+  cancelar = () => {
+    this.setState({
+      login: '',
+      senha: '',
+    });
+  };
 
-            <div className="wrap-input">
-              <input
-                className={email !== "" ? "has-val input" : "input"}
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-              <span className="focus-input" data-placeholder="Email"></span>
+  render() {
+    return (
+      <div className='container'>
+        <div className='col-lg-4'>
+          <Card title='Acesso'>
+            <div className='row'>
+              <div className='bs-component'>
+                <FormGroup label='Login: *' htmlFor='inputLogin'>
+                  <input
+                    type='text'
+                    id='inputLogin'
+                    value={this.state.login}
+                    className='form-control'
+                    name='login'
+                    onChange={(e) => this.setState({ login: e.target.value })}
+                  />
+                </FormGroup>
+                <FormGroup label='Senha: *' htmlFor='inputSenha'>
+                  <input
+                    type='password'
+                    id='inputSenha'
+                    value={this.state.senha}
+                    className='form-control'
+                    name='senha'
+                    onChange={(e) => this.setState({ senha: e.target.value })}
+                  />
+                </FormGroup>
+                <Stack spacing={1} padding={1} direction='row'>
+                  <button
+                    onClick={this.logar}
+                    type='button'
+                    className='btn btn-success'
+                  >
+                    Entrar
+                  </button>
+                  <button
+                    onClick={this.cancelar}
+                    type='button'
+                    className='btn btn-danger'
+                  >
+                    Cancelar
+                  </button>
+                </Stack>
+              </div>
             </div>
-
-            <div className="wrap-input">
-              <input
-                className={password !== "" ? "has-val input" : "input"}
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-              <span className="focus-input" data-placeholder="Password"></span>
-            </div>
-
-            <div className="container-login-form-btn">
-              <button className="login-form-btn" onClick={() => logar()}>Login</button>
-            </div>
-
-          </form>
+          </Card>
         </div>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
-export default TelaLogin;
+export default Login;

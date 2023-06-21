@@ -26,8 +26,11 @@ function CadastrarPedido() {
   const [idGerente, setIdGerente] = useState(0);
   const [idFornecedor, setIdFornecedor] = useState(0);
   const [idProduto, setIdProduto] = useState(0);
+  const [quantidade, setQuantidade] = useState(0);
 
   const [dados, setDados] = React.useState([]);
+
+  const [itensProduto, setItensProduto] = useState([]);
 
   function inicializar() {
     if (idParam == null) {
@@ -48,7 +51,7 @@ function CadastrarPedido() {
   }
 
   async function salvar() {
-    let data = { id, dataEntrega, dataPedido, idGerente, idFornecedor, idProduto };
+    let data = { id, dataEntrega, dataPedido, idGerente, idFornecedor, idProduto, itensProduto };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -56,7 +59,7 @@ function CadastrarPedido() {
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Pedido relizada com sucesso!`);
+          mensagemSucesso(`Pedido realizado com sucesso!`);
           navigate(`/listagem-Pedidos`);
         })
         .catch(function (error) {
@@ -87,9 +90,10 @@ function CadastrarPedido() {
     setIdGerente(dados.idGerente);
     setIdFornecedor(dados.idFornecedor);
     setIdProduto(dados.idProduto);
+    setItensProduto(dados.itensProduto);
   }
 
-   const cadastrarFornecedor = () => {
+  const cadastrarFornecedor = () => {
     navigate(`/cadastro-fornecedor`);
   };
 
@@ -134,14 +138,26 @@ function CadastrarPedido() {
   if (!dadosFornecedores) return null;
   if (!dadosProdutos) return null;
 
+  const adicionarItem = () => {
+    const novoItem = {
+      produto: { nome: '', quantidade: 0 },
+    };
+    setItensProduto([...itensProduto, novoItem]);
+  };
+
+  const removerItem = (index) => {
+    const novosItens = [...itensProduto];
+    novosItens.splice(index, 1);
+    setItensProduto(novosItens);
+  };
+
   return (
     <div className='container'>
       <Card title='Realizar Pedidos'>
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
-              
-            <FormGroup label='Produto: *' htmlFor='selectProduto'>
+              <FormGroup label='Produto: *' htmlFor='selectProduto'>
                 <select
                   className='form-select'
                   id='selectProduto'
@@ -149,17 +165,15 @@ function CadastrarPedido() {
                   value={idProduto}
                   onChange={(e) => setIdProduto(e.target.value)}
                 >
-                  <option key='0' value='0'>
-                    {' '}
-                  </option>
+                  <option key='0' value='0'></option>
                   {dadosProdutos.map((dado) => (
                     <option key={dado.id} value={dado.id}>
-                      {dado.descricao}
+                      {dado.nome}
                     </option>
                   ))}
                 </select>
               </FormGroup>
-
+  
               <FormGroup label='Fornecedor: *' htmlFor='selectFornecedor'>
                 <select
                   className='form-select'
@@ -168,9 +182,7 @@ function CadastrarPedido() {
                   value={idFornecedor}
                   onChange={(e) => setIdFornecedor(e.target.value)}
                 >
-                  <option key='0' value='0'>
-                    {''}
-                  </option>
+                  <option key='0' value='0'></option>
                   {dadosFornecedores.map((dado) => (
                     <option key={dado.id} value={dado.id}>
                       {dado.nome}
@@ -178,7 +190,7 @@ function CadastrarPedido() {
                   ))}
                 </select>
               </FormGroup>
-              
+  
               <FormGroup label='Data do Pedido: *' htmlFor='inputDataPedido'>
                 <input
                   type='date'
@@ -187,43 +199,69 @@ function CadastrarPedido() {
                   name='dataPedido'
                   value={dataPedido}
                   onChange={(e) => setDataPedido(e.target.value)}
-                >
-                </input>
+                />
               </FormGroup>
-
+  
               <FormGroup label='Data da Entrega: *' htmlFor='inputDataEntrega'>
                 <input
                   type='date'
-                  id='inputDataEntrega'
-                  value={dataEntrega}
                   className='form-control'
+                  id='inputDataEntrega'
                   name='dataEntrega'
+                  value={dataEntrega}
                   onChange={(e) => setDataEntrega(e.target.value)}
                 />
-                </FormGroup>
-
+              </FormGroup>
+  
+              {/* Renderizar os itens de pedido */}
+              {itensProduto.length > 0 && (
+                <div>
+                  <h4>Itens do Pedido:</h4>
+                  <ul>
+                    {itensProduto.map((item, index) => (
+                      <li key={index}>
+                        {item.produto.nome} - Quantidade: {item.quantidade} - Valor Total: {item.valorTotal}
+                        <button
+                          onClick={() => removerItem(index)}
+                          type='button'
+                          className='btn btn-sm btn-danger'
+                          style={{ marginLeft: '10px' }}
+                        >
+                          Remover
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+  
+              <FormGroup label='Quantidade: *' htmlFor='inputQuantidade'>
+                <input
+                  type='number'
+                  className='form-control'
+                  id='inputQuantidade'
+                  name='quantidade'
+                  value={quantidade}
+                  onChange={(e) => setQuantidade(e.target.value)}
+                />
+              </FormGroup>
+  
               <Stack spacing={1} padding={1} direction='row'>
-                <button
-                  onClick={salvar}
-                  type='button'
-                  className='btn btn-success'
-                >
-                  Cadastrar Pedido
-                </button>
-                <button
-                  onClick={inicializar}
-                  type='button'
-                  className='btn btn-danger'
-                >
-                  Cancelar
+                <button onClick={adicionarItem} type='button' className='btn btn-sm btn-success'>
+                  Adicionar Item
                 </button>
               </Stack>
+  
+              <button onClick={salvar} type='button' className='btn btn-success'>
+                Salvar
+              </button>
             </div>
           </div>
         </div>
       </Card>
     </div>
   );
+  
 }
 
 export default CadastrarPedido;
