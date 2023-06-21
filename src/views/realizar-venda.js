@@ -37,7 +37,13 @@ function RealizarVenda() {
     const itemSelecionado = dadosProdutos.find((dado) => dado.id === idProduto);
 
     if (itemSelecionado) {
-      setItensVenda([...itensVenda, { produto: itemSelecionado, quantidade }]);
+      const itemVenda = {
+        produto: itemSelecionado,
+        quantidade,
+        valorUnitario: itemSelecionado.precoUnitario,
+      };
+
+      setItensVenda([...itensVenda, itemVenda]);
     }
   };
 
@@ -45,6 +51,19 @@ function RealizarVenda() {
     const novaLista = itensVenda.filter((i) => i !== item);
     setItensVenda(novaLista);
   };
+
+  useEffect(() => {
+    inicializar();
+
+    if (idParam) {
+      buscar();
+    }
+
+    buscarFuncionarios();
+    buscarClientes();
+    buscarMetodoPagamentos();
+    buscarProdutos();
+  }, [idParam]);
 
   function inicializar() {
     if (idParam == null) {
@@ -63,6 +82,63 @@ function RealizarVenda() {
       setValorTotal(dados.valorTotal);
     }
   }
+
+  async function buscar() {
+    await axios.get(`${baseURL}/${idParam}`).then((response) => {
+      setDados(response.data);
+    });
+  }
+
+  async function buscarFuncionarios() {
+    await axios.get(`${BASE_URL}/funcionarios`).then((response) => {
+      setDadosFuncionarios(response.data);
+    });
+  }
+
+  async function buscarClientes() {
+    await axios.get(`${BASE_URL}/clientes`).then((response) => {
+      setDadosClientes(response.data);
+    });
+  }
+
+  async function buscarMetodoPagamentos() {
+    await axios.get(`${BASE_URL}/metodos-pagamento`).then((response) => {
+      setDadosMetodoPagamentos(response.data);
+    });
+  }
+
+  async function buscarProdutos() {
+    await axios.get(`${BASE_URL}/produtos`).then(async (response) => {
+      const produtos = response.data;
+      const produtosCompletos = await Promise.all(
+        produtos.map(async (produto) => {
+          const corResponse = await axios.get(
+            `${BASE_URL}/cores/${produto.idCor}`
+            
+          );
+          
+          const tamanhoResponse = await axios.get(
+            `${BASE_URL}/tamanhos/${produto.idTamanho}`
+          );
+          const generoResponse = await axios.get(
+            `${BASE_URL}/generos/${produto.idGenero}`
+          );
+          const cor = corResponse.data.nomeCor;
+          const tamanho = tamanhoResponse.data.nomeTamanho;
+          const genero = generoResponse.data.nomeGenero;
+          return {
+            ...produto,
+            cor,
+            tamanho,
+            genero,
+          };
+        })
+      );
+  
+      setDadosProdutos(produtosCompletos);
+    });
+  }
+  
 
   async function salvar() {
     const vendaData = {
@@ -91,48 +167,19 @@ function RealizarVenda() {
     }
   }
 
-  async function buscar() {
-    await axios.get(`${baseURL}/${idParam}`).then((response) => {
-      setDados(response.data);
-    });
-  }
+  const calcularValorTotal = () => {
+    let total = 0;
 
-  async function buscarFuncionarios() {
-    await axios.get(`${BASE_URL}/funcionarios`).then((response) => {
-      setDadosFuncionarios(response.data);
-    });
-  }
-
-  async function buscarClientes() {
-    await axios.get(`${BASE_URL}/clientes`).then((response) => {
-      setDadosClientes(response.data);
-    });
-  }
-
-  async function buscarMetodoPagamentos() {
-    await axios.get(`${BASE_URL}/metodoPagamentos`).then((response) => {
-      setDadosMetodoPagamentos(response.data);
-    });
-  }
-
-  async function buscarProdutos() {
-    await axios.get(`${BASE_URL}/produtos`).then((response) => {
-      setDadosProdutos(response.data);
-    });
-  }
-
-  useEffect(() => {
-    inicializar();
-
-    if (idParam) {
-      buscar();
+    for (const item of itensVenda) {
+      total += item.produto.precoUnitario * item.quantidade;
     }
 
-    buscarFuncionarios();
-    buscarClientes();
-    buscarMetodoPagamentos();
-    buscarProdutos();
-  }, [idParam]);
+    setValorTotal(total);
+  };
+
+  useEffect(() => {
+    calcularValorTotal();
+  }, [itensVenda]);
 
   return (
     <Card
@@ -198,8 +245,9 @@ function RealizarVenda() {
           <option value={0}>Selecione...</option>
           {dadosProdutos &&
             dadosProdutos.map((produto) => (
+              
               <option key={produto.id} value={produto.id}>
-                {produto.nome}
+                {produto.nome} - {produto.cor} - {produto.tamanho} - {produto.genero}
               </option>
             ))}
         </select>
@@ -228,7 +276,7 @@ function RealizarVenda() {
           <ul>
             {itensVenda.map((item, index) => (
               <li key={index}>
-                {item.produto.nome} - Quantidade: {item.quantidade}
+                {item.produto.nome} {item.produto.cor} {item.produto.tamanho} {item.produto.genero}   - Quantidade: {item.quantidade}
                 <button onClick={() => removerItem(item)}>Remover</button>
               </li>
             ))}
@@ -236,6 +284,7 @@ function RealizarVenda() {
         </div>
       )}
 
+      <h4>Valor Total: {valorTotal}</h4>
 
       <button
         onClick={salvar}
@@ -252,9 +301,8 @@ function RealizarVenda() {
         Cancelar
       </button>
 
-    </Card >
+    </Card>
   );
 }
-
 
 export default RealizarVenda;

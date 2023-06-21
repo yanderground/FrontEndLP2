@@ -30,7 +30,17 @@ function CadastrarPedido() {
 
   const [dados, setDados] = React.useState([]);
 
-  const [itensProduto, setItensProduto] = useState([]);
+  const [itensPedido, setItensPedido] = useState([]);
+
+  useEffect(() => {
+    inicializar();
+
+    if (idParam) {
+      buscar();
+    }
+
+    buscarProdutos();
+  }, [idParam]);
 
   function inicializar() {
     if (idParam == null) {
@@ -50,8 +60,38 @@ function CadastrarPedido() {
     }
   }
 
+  async function buscarProdutos() {
+    await axios.get(`${BASE_URL}/produtos`).then(async (response) => {
+      const produtos = response.data;
+      const produtosCompletos = await Promise.all(
+        produtos.map(async (produto) => {
+          const corResponse = await axios.get(
+            `${BASE_URL}/cores/${produto.idCor}`
+          );
+          const tamanhoResponse = await axios.get(
+            `${BASE_URL}/tamanhos/${produto.idTamanho}`
+          );
+          const generoResponse = await axios.get(
+            `${BASE_URL}/generos/${produto.idGenero}`
+          );
+          const cor = corResponse.data.nomeCor;
+          const tamanho = tamanhoResponse.data.nomeTamanho;
+          const genero = generoResponse.data.nomeGenero;
+          return {
+            ...produto,
+            cor,
+            tamanho,
+            genero,
+          };
+        })
+      );
+
+      setDadosProdutos(produtosCompletos);
+    });
+  }
+
   async function salvar() {
-    let data = { id, dataEntrega, dataPedido, idGerente, idFornecedor, idProduto, itensProduto };
+    let data = { id, dataEntrega, dataPedido, idGerente, idFornecedor, idProduto, itensPedido };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -90,12 +130,8 @@ function CadastrarPedido() {
     setIdGerente(dados.idGerente);
     setIdFornecedor(dados.idFornecedor);
     setIdProduto(dados.idProduto);
-    setItensProduto(dados.itensProduto);
+    setItensPedido(dados.itensPedido);
   }
-
-  const cadastrarFornecedor = () => {
-    navigate(`/cadastro-fornecedor`);
-  };
 
   const [dadosGerentes, setDadosGerentes] = React.useState(null);
 
@@ -110,14 +146,6 @@ function CadastrarPedido() {
   useEffect(() => {
     axios.get(`${BASE_URL}/fornecedores`).then((response) => {
       setDadosFornecedors(response.data);
-    });
-  }, []);
-
-  const [dadosMetodoPagamentos, setDadosMetodoPagamentos] = React.useState(null);
-
-  useEffect(() => {
-    axios.get(`${BASE_URL}/metodoPagamentos`).then((response) => {
-      setDadosMetodoPagamentos(response.data);
     });
   }, []);
 
@@ -138,17 +166,23 @@ function CadastrarPedido() {
   if (!dadosFornecedores) return null;
   if (!dadosProdutos) return null;
 
-  const adicionarItem = () => {
-    const novoItem = {
-      produto: { nome: '', quantidade: 0 },
-    };
-    setItensProduto([...itensProduto, novoItem]);
+  const adicionarItemPedido = () => {
+    const itemSelecionado = dadosProdutos.find((dado) => dado.id === idProduto);
+
+    if (itemSelecionado) {
+      const itemPedido = {
+        produto: itemSelecionado,
+        quantidade,
+        valorUnitario: itemSelecionado.precoUnitario,
+      };
+
+      setItensPedido([...itensPedido, itemPedido]);
+    }
   };
 
-  const removerItem = (index) => {
-    const novosItens = [...itensProduto];
-    novosItens.splice(index, 1);
-    setItensProduto(novosItens);
+  const removerItem = (item) => {
+    const novaLista = itensPedido.filter((i) => i !== item);
+    setItensPedido(novaLista);
   };
 
   return (
@@ -157,23 +191,23 @@ function CadastrarPedido() {
         <div className='row'>
           <div className='col-lg-12'>
             <div className='bs-component'>
-              <FormGroup label='Produto: *' htmlFor='selectProduto'>
+              <FormGroup label='Gerente: *' htmlFor='selectGerente'>
                 <select
                   className='form-select'
-                  id='selectProduto'
-                  name='idProduto'
-                  value={idProduto}
-                  onChange={(e) => setIdProduto(e.target.value)}
+                  id='selectGerente'
+                  name='idGerente'
+                  value={idGerente}
+                  onChange={(e) => setIdGerente(e.target.value)}
                 >
                   <option key='0' value='0'></option>
-                  {dadosProdutos.map((dado) => (
+                  {dadosGerentes.map((dado) => (
                     <option key={dado.id} value={dado.id}>
                       {dado.nome}
                     </option>
                   ))}
                 </select>
               </FormGroup>
-  
+
               <FormGroup label='Fornecedor: *' htmlFor='selectFornecedor'>
                 <select
                   className='form-select'
@@ -190,7 +224,7 @@ function CadastrarPedido() {
                   ))}
                 </select>
               </FormGroup>
-  
+
               <FormGroup label='Data do Pedido: *' htmlFor='inputDataPedido'>
                 <input
                   type='date'
@@ -201,7 +235,7 @@ function CadastrarPedido() {
                   onChange={(e) => setDataPedido(e.target.value)}
                 />
               </FormGroup>
-  
+
               <FormGroup label='Data da Entrega: *' htmlFor='inputDataEntrega'>
                 <input
                   type='date'
@@ -212,15 +246,43 @@ function CadastrarPedido() {
                   onChange={(e) => setDataEntrega(e.target.value)}
                 />
               </FormGroup>
-  
+
+              <FormGroup label='Produto:' htmlFor='selectProduto'>
+                <select
+                  className='form-control'
+                  id='selectProduto'
+                  name='idProduto'
+                  value={idProduto}
+                  onChange={(e) => setIdProduto(Number(e.target.value))}
+                >
+                  <option value={0}>Selecione...</option>
+                  {dadosProdutos.map((produto) => (
+                    <option key={produto.id} value={produto.id}>
+                      {`${produto.nome} - ${produto.cor} - ${produto.tamanho} - ${produto.genero}`}
+                    </option>
+                  ))}
+                </select>
+              </FormGroup>
+
+              <FormGroup label='Quantidade: *' htmlFor='inputQuantidade'>
+                <input
+                  type='number'
+                  className='form-control'
+                  id='inputQuantidade'
+                  name='quantidade'
+                  value={quantidade}
+                  onChange={(e) => setQuantidade(e.target.value)}
+                />
+              </FormGroup>
+
               {/* Renderizar os itens de pedido */}
-              {itensProduto.length > 0 && (
+              {itensPedido.length > 0 && (
                 <div>
                   <h4>Itens do Pedido:</h4>
                   <ul>
-                    {itensProduto.map((item, index) => (
+                    {itensPedido.map((item, index) => (
                       <li key={index}>
-                        {item.produto.nome} - Quantidade: {item.quantidade} - Valor Total: {item.valorTotal}
+                        {item.produto.nome} {item.produto.cor} {item.produto.tamanho} {item.produto.genero} - Quantidade: {item.quantidade} 
                         <button
                           onClick={() => removerItem(index)}
                           type='button'
@@ -234,24 +296,13 @@ function CadastrarPedido() {
                   </ul>
                 </div>
               )}
-  
-              <FormGroup label='Quantidade: *' htmlFor='inputQuantidade'>
-                <input
-                  type='number'
-                  className='form-control'
-                  id='inputQuantidade'
-                  name='quantidade'
-                  value={quantidade}
-                  onChange={(e) => setQuantidade(e.target.value)}
-                />
-              </FormGroup>
-  
+
               <Stack spacing={1} padding={1} direction='row'>
-                <button onClick={adicionarItem} type='button' className='btn btn-sm btn-success'>
+                <button onClick={adicionarItemPedido} type='button' className='btn btn-sm btn-success'>
                   Adicionar Item
                 </button>
               </Stack>
-  
+
               <button onClick={salvar} type='button' className='btn btn-success'>
                 Salvar
               </button>
@@ -261,7 +312,6 @@ function CadastrarPedido() {
       </Card>
     </div>
   );
-  
 }
 
 export default CadastrarPedido;
