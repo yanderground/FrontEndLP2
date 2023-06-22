@@ -19,11 +19,12 @@ function RealizarVenda() {
   const baseURL = `${BASE_URL}/vendas`;
 
   const [id, setId] = useState(0);
-  const [valorTotal, setValorTotal] = useState(0);
+  const [precoTotal, setPrecoTotal] = useState(0);
   const [idFuncionario, setIdFuncionario] = useState(0);
   const [idCliente, setIdCliente] = useState(0);
   const [idMetodoPagamento, setIdMetodoPagamento] = useState(0);
   const [idProduto, setIdProduto] = useState(0);
+
   const [quantidade, setQuantidade] = useState(0);
   const [itensVenda, setItensVenda] = useState([]);
 
@@ -37,7 +38,13 @@ function RealizarVenda() {
     const itemSelecionado = dadosProdutos.find((dado) => dado.id === idProduto);
 
     if (itemSelecionado) {
-      setItensVenda([...itensVenda, { produto: itemSelecionado, quantidade }]);
+      const itemVenda = {
+        produto: itemSelecionado,
+        quantidade,
+        valorUnitario: itemSelecionado.precoUnitario,
+      };
+
+      setItensVenda([...itensVenda, itemVenda]);
     }
   };
 
@@ -46,48 +53,32 @@ function RealizarVenda() {
     setItensVenda(novaLista);
   };
 
+  useEffect(() => {
+    inicializar();
+
+    if (idParam) {
+      buscar();
+    }
+
+    buscarFuncionarios();
+    buscarClientes();
+    buscarMetodoPagamentos();
+    buscarProdutos();
+  }, [idParam]);
+
   function inicializar() {
     if (idParam == null) {
       setId(0);
-      setIdProduto(0);
       setIdFuncionario(0);
       setIdCliente(0);
       setIdMetodoPagamento(0);
-      setValorTotal(0);
+      setPrecoTotal(0);
     } else {
       setId(dados.id);
-      setIdProduto(dados.idProduto);
       setIdFuncionario(dados.idFuncionario);
       setIdCliente(dados.idCliente);
       setIdMetodoPagamento(dados.idMetodoPagamento);
-      setValorTotal(dados.valorTotal);
-    }
-  }
-
-  async function salvar() {
-    const vendaData = {
-      idFuncionario,
-      idCliente,
-      idMetodoPagamento,
-      valorTotal,
-    };
-
-    try {
-      const response = await axios.post(baseURL, vendaData);
-      const vendaId = response.data.id;
-
-      const produtoVendaDataList = itensVenda.map((item) => ({
-        produto: item.produto,
-        venda: { id: vendaId },
-        quantidade: item.quantidade,
-      }));
-
-      await axios.post(`${BASE_URL}/produtoVenda/batch`, produtoVendaDataList);
-
-      mensagemSucesso('Venda realizada com sucesso!');
-      navigate(`/listagem-vendas`);
-    } catch (error) {
-      mensagemErro(error.response.data);
+      setPrecoTotal(dados.precoTotal);
     }
   }
 
@@ -110,29 +101,90 @@ function RealizarVenda() {
   }
 
   async function buscarMetodoPagamentos() {
-    await axios.get(`${BASE_URL}/metodoPagamentos`).then((response) => {
+    await axios.get(`${BASE_URL}/metodos-pagamento`).then((response) => {
       setDadosMetodoPagamentos(response.data);
     });
   }
 
   async function buscarProdutos() {
-    await axios.get(`${BASE_URL}/produtos`).then((response) => {
-      setDadosProdutos(response.data);
+    await axios.get(`${BASE_URL}/produtos`).then(async (response) => {
+      const produtos = response.data;
+      const produtosCompletos = await Promise.all(
+        produtos.map(async (produto) => {
+          const corResponse = await axios.get(
+            `${BASE_URL}/cores/${produto.idCor}`
+          );
+          const tamanhoResponse = await axios.get(
+            `${BASE_URL}/tamanhos/${produto.idTamanho}`
+          );
+          const generoResponse = await axios.get(
+            `${BASE_URL}/generos/${produto.idGenero}`
+          );
+          const cor = corResponse.data.nomeCor;
+          const tamanho = tamanhoResponse.data.nomeTamanho;
+          const genero = generoResponse.data.nomeGenero;
+          return {
+            ...produto,
+            cor,
+            tamanho,
+            genero,
+          };
+        })
+      );
+      setDadosProdutos(produtosCompletos);
     });
   }
 
-  useEffect(() => {
-    inicializar();
+  async function salvar() {
+    const vendaData = {
+      idFuncionario,
+      idCliente,
+      idMetodoPagamento,
+      precoTotal,
+    };
+    const data = JSON.stringify(vendaData);
+    try {
+      const response = await axios.post(baseURL, data, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const vendaId = response.data.id;
+  
+      const produtoVendaDataList = itensVenda.map((item) => ({
+        idProduto: item.produto.id,
+        idVenda: vendaId,
+        quantidade: item.quantidade,
+      }));
+      for (const produtoVendaData of produtoVendaDataList) {
+        try {
+          await axios.post(`${BASE_URL}/produtos-venda`, produtoVendaData, {
+            headers: { 'Content-Type': 'application/json' },
+          });
+        } catch (error) {
+          mensagemErro(error.response.data);
+        }
+      }
+  
+      mensagemSucesso('Venda realizada com sucesso!');
+      navigate(`/listagem-vendas`);
+    } catch (error) {
+      mensagemErro(error.response.data);
+    }
+  }
+  
 
-    if (idParam) {
-      buscar();
+  const calcularprecoTotal = () => {
+    let total = 0.0;
+
+    for (const item of itensVenda) {
+      total += item.produto.precoUnitario * item.quantidade;
     }
 
-    buscarFuncionarios();
-    buscarClientes();
-    buscarMetodoPagamentos();
-    buscarProdutos();
-  }, [idParam]);
+    setPrecoTotal(total);
+  };
+
+  useEffect(() => {
+    calcularprecoTotal();
+  }, [itensVenda]);
 
   return (
     <Card
@@ -198,8 +250,9 @@ function RealizarVenda() {
           <option value={0}>Selecione...</option>
           {dadosProdutos &&
             dadosProdutos.map((produto) => (
+
               <option key={produto.id} value={produto.id}>
-                {produto.nome}
+                {produto.nome} - {produto.cor} - {produto.tamanho} - {produto.genero}
               </option>
             ))}
         </select>
@@ -214,6 +267,7 @@ function RealizarVenda() {
         />
       </FormGroup>
 
+      <Stack spacing={1} padding={1} direction='row'>
       <button
         className="btn btn-primary"
         onClick={adicionarItemVenda}
@@ -221,22 +275,31 @@ function RealizarVenda() {
       >
         Adicionar Item
       </button>
-
+      </Stack>
+      <Stack spacing={1} padding={1} direction='row'>
       {itensVenda.length > 0 && (
         <div>
           <h4>Itens da Venda:</h4>
           <ul>
             {itensVenda.map((item, index) => (
               <li key={index}>
-                {item.produto.nome} - Quantidade: {item.quantidade}
-                <button onClick={() => removerItem(item)}>Remover</button>
+                {item.produto.nome} {item.produto.cor} {item.produto.tamanho} {item.produto.genero}   - Quantidade: {item.quantidade}
+                <button
+                  onClick={() => removerItem(index)}
+                  type='button'
+                  className='btn btn-sm btn-danger'
+                  style={{ marginLeft: '10px' }}
+                >
+                  Remover
+                </button>
               </li>
             ))}
           </ul>
         </div>
       )}
-
-
+      </Stack>
+      <h4>Valor Total: {precoTotal}</h4>
+      <Stack spacing={1} padding={1} direction='row'>
       <button
         onClick={salvar}
         type="button"
@@ -244,17 +307,9 @@ function RealizarVenda() {
       >
         Realizar Venda
       </button>
-      <button
-        onClick={inicializar}
-        type="button"
-        className="btn btn-danger"
-      >
-        Cancelar
-      </button>
-
-    </Card >
+      </Stack>
+    </Card>
   );
 }
-
 
 export default RealizarVenda;

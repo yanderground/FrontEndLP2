@@ -21,22 +21,22 @@ function CadastroDepartamento(){
   const baseURL = `${BASE_URL}/departamentos`;
   
   const [id, setId] = useState(0);
-  const [titulo, setTitulo] = useState('');
+  const [nomeDepartamento, setNomeDepartamento] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
   function inicializar() {
     if (idParam == null) {
       setId(0);
-      setTitulo('');
+      setNomeDepartamento('');
     } else {
       setId(dados.id);
-      setTitulo(dados.titulo);
+      setNomeDepartamento(dados.nomeDepartamento);
     }
   }
 
   async function salvar() {
-    let data = { id, titulo };
+    let data = { id, nomeDepartamento };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -44,7 +44,7 @@ function CadastroDepartamento(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Departamento ${titulo} cadastrado com sucesso!`);
+          mensagemSucesso(`Departamento ${nomeDepartamento} cadastrado com sucesso!`);
           navigate(`/listagem-departamentos`);
         })
         .catch(function (error) {
@@ -56,7 +56,7 @@ function CadastroDepartamento(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Departamento ${titulo} alterado com sucesso!`);
+          mensagemSucesso(`Departamento ${nomeDepartamento} alterado com sucesso!`);
           navigate(`/listagem-departamentos`);
         })
         .catch(function (error) {
@@ -74,7 +74,7 @@ function CadastroDepartamento(){
       setDados(response.data);
     });
     setId(dados.id);
-    setTitulo(dados.titulo);
+    setNomeDepartamento(dados.nomeDepartamento);
   }
 
  if (!dados) return null;
@@ -85,14 +85,14 @@ function CadastroDepartamento(){
           <div className='row'>
             <div className='col-lg-12'>
               <div className='bs-component'>
-                <FormGroup label='Titulo: *' htmlFor='inputTitulo'>
+                <FormGroup label='Departamento: *' htmlFor='inputnomeDepartamento'>
                   <input
                     type='text'
-                    id='inputTitulo'
-                    value={titulo}
+                    id='inputnomeDepartamento'
+                    value={nomeDepartamento}
                     className='form-control'
-                    name='titulo'
-                    onChange={(e) => setTitulo(e.target.value)}
+                    name='nomeDepartamento'
+                    onChange={(e) => setNomeDepartamento(e.target.value)}
                   />
                 </FormGroup>
 
