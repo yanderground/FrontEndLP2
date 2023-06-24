@@ -119,3 +119,5 @@ function CadastroTamanho(){
       </div>
     );
 }
+
+export default CadastroTamanho;
