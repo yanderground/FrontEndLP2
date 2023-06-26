@@ -21,7 +21,7 @@ function CadastroCor(){
   const baseURL = `${BASE_URL}/cores`;
   
   const [id, setId] = useState(0);
-  const [titulo, setTitulo] = useState('');
+  const [nomeCor, setNomeCor] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
@@ -29,16 +29,16 @@ function CadastroCor(){
     
     if (idParam == null) {
       setId(0);
-      setTitulo('');
+      setNomeCor('');
     } else {
       console.log(idParam)
       setId(dados.id);
-      setTitulo(dados.titulo);
+      setNomeCor(dados.nomeCor);
     }
   }
 
   async function salvar() {
-    let data = { id, titulo };
+    let data = { id, nomeCor };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -46,7 +46,7 @@ function CadastroCor(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Cor ${titulo} cadastrada com sucesso!`);
+          mensagemSucesso(`Cor ${nomeCor} cadastrada com sucesso!`);
           navigate(`/listagem-cores`);
         })
         .catch(function (error) {
@@ -58,7 +58,7 @@ function CadastroCor(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Cor ${titulo} alterada com sucesso!`);
+          mensagemSucesso(`Cor ${nomeCor} alterada com sucesso!`);
           navigate(`/listagem-cores`);
         })
         .catch(function (error) {
@@ -76,7 +76,7 @@ function CadastroCor(){
       setDados(response.data);
     });
     setId(dados.id);
-    setTitulo(dados.titulo);
+    setNomeCor(dados.nomeCor);
   }
 
  if (!dados) return null;
@@ -87,14 +87,14 @@ function CadastroCor(){
           <div className='row'>
             <div className='col-lg-12'>
               <div className='bs-component'>
-                <FormGroup label='Titulo: *' htmlFor='inputTitulo'>
+                <FormGroup label='Cor: *' htmlFor='inputnomeCor'>
                   <input
                     type='text'
-                    id='inputTitulo'
-                    value={titulo}
+                    id='inputnomeCor'
+                    value={nomeCor}
                     className='form-control'
-                    name='titulo'
-                    onChange={(e) => setTitulo(e.target.value)}
+                    name='nomeCor'
+                    onChange={(e) => setNomeCor(e.target.value)}
                   />
                 </FormGroup>
 

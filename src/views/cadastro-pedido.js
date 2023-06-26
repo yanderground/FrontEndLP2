@@ -27,9 +27,8 @@ function CadastrarPedido() {
   const [idFornecedor, setIdFornecedor] = useState(0);
   const [idProduto, setIdProduto] = useState(0);
   const [quantidade, setQuantidade] = useState(0);
-
-  const [dados, setDados] = React.useState([]);
-
+  const [precoTotal, setPrecoTotal] = useState(0);
+  const [dados, setDados] = useState([]);
   const [itensPedido, setItensPedido] = useState([]);
 
   useEffect(() => {
@@ -38,23 +37,25 @@ function CadastrarPedido() {
     if (idParam) {
       buscar();
     }
-
+    buscarGerentes();
     buscarProdutos();
+    buscarFornecedores();
   }, [idParam]);
 
   function inicializar() {
     if (idParam == null) {
       setId(0);
-      setIdProduto(0);
       setIdGerente(0);
       setIdFornecedor(0);
+      setPrecoTotal(0);
       setDataEntrega('');
       setDataPedido('');
+
     } else {
       setId(dados.id);
-      setIdProduto(dados.idProduto);
       setIdGerente(dados.idGerente);
       setIdFornecedor(dados.idFornecedor);
+      setPrecoTotal(dados.precoTotal);
       setDataEntrega(dados.dataEntrega);
       setDataPedido(dados.dataPedido);
     }
@@ -91,75 +92,68 @@ function CadastrarPedido() {
   }
 
   async function salvar() {
-    let data = { id, dataEntrega, dataPedido, idGerente, idFornecedor, idProduto, itensPedido };
-    data = JSON.stringify(data);
-    if (idParam == null) {
-      await axios
-        .post(baseURL, data, {
-          headers: { 'Content-Type': 'application/json' },
-        })
-        .then(function (response) {
-          mensagemSucesso(`Pedido realizado com sucesso!`);
-          navigate(`/listagem-Pedidos`);
-        })
-        .catch(function (error) {
+    const pedidoData = {
+      idGerente,
+      idFornecedor,
+      dataPedido: new Date(dataPedido).toISOString(),
+      dataEntrega: new Date(dataEntrega).toISOString(),
+      precoTotal,
+    };
+    const data = JSON.stringify(pedidoData);
+    try {
+      const response = await axios.post(baseURL, data, {
+        headers: { 'Content-Type': 'application/json' },
+      });
+      const pedidoId = response.data.id;
+      const pedidoProdutoDataList = itensPedido.map((item) => ({
+        idProduto: item.produto.id,
+        idPedido: pedidoId,
+        quantidade: item.quantidade,
+      }));
+      for (const pedidoProdutoData of pedidoProdutoDataList) {
+        try {
+          await axios.post(`${BASE_URL}/produtos-pedido`, pedidoProdutoData, {
+            headers: { 'Content-Type': 'application/json' },
+          });
+        } catch (error) {
           mensagemErro(error.response.data);
-        });
-    } else {
-      await axios
-        .put(`${baseURL}/${idParam}`, data, {
-          headers: { 'Content-Type': 'application/json' },
-        })
-        .then(function (response) {
-          mensagemSucesso(`Pedido ${id} alterado com sucesso!`);
-          navigate(`/listagem-Pedidos`);
-        })
-        .catch(function (error) {
-          mensagemErro(error.response.data);
-        });
+        }
+      }
+
+      mensagemSucesso('Pedido realizado com sucesso!');
+      navigate(`/listagem-pedidos`);
+    } catch (error) {
+      console.log(error)
+      mensagemErro(error.response.data);
     }
   }
+
 
   async function buscar() {
     await axios.get(`${baseURL}/${idParam}`).then((response) => {
       setDados(response.data);
     });
-    setId(dados.id);
-    setDataEntrega(dados.dataEntrega);
-    setDataPedido(dados.dataPedido);
-    setIdGerente(dados.idGerente);
-    setIdFornecedor(dados.idFornecedor);
-    setIdProduto(dados.idProduto);
-    setItensPedido(dados.itensPedido);
   }
 
   const [dadosGerentes, setDadosGerentes] = React.useState(null);
 
-  useEffect(() => {
+
+  async function buscarGerentes() {
     axios.get(`${BASE_URL}/gerentes`).then((response) => {
       setDadosGerentes(response.data);
     });
-  }, []);
+  };
 
   const [dadosFornecedores, setDadosFornecedors] = React.useState(null);
 
-  useEffect(() => {
+  async function buscarFornecedores() {
     axios.get(`${BASE_URL}/fornecedores`).then((response) => {
       setDadosFornecedors(response.data);
     });
-  }, []);
+  };
 
   const [dadosProdutos, setDadosProdutos] = React.useState(null);
 
-  useEffect(() => {
-    axios.get(`${BASE_URL}/produtos`).then((response) => {
-      setDadosProdutos(response.data);
-    });
-  }, []);
-
-  useEffect(() => {
-    buscar(); // eslint-disable-next-line
-  }, [id]);
 
   if (!dados) return null;
   if (!dadosGerentes) return null;
@@ -199,7 +193,7 @@ function CadastrarPedido() {
                   value={idGerente}
                   onChange={(e) => setIdGerente(e.target.value)}
                 >
-                  <option key='0' value='0'></option>
+                  <option value={0}>Selecione...</option>
                   {dadosGerentes.map((dado) => (
                     <option key={dado.id} value={dado.id}>
                       {dado.nome}
@@ -216,7 +210,7 @@ function CadastrarPedido() {
                   value={idFornecedor}
                   onChange={(e) => setIdFornecedor(e.target.value)}
                 >
-                  <option key='0' value='0'></option>
+                  <option value={0}>Selecione...</option>
                   {dadosFornecedores.map((dado) => (
                     <option key={dado.id} value={dado.id}>
                       {dado.nome}
@@ -247,20 +241,20 @@ function CadastrarPedido() {
                 />
               </FormGroup>
 
-              <FormGroup label='Produto:' htmlFor='selectProduto'>
+              <FormGroup label="Produto">
                 <select
-                  className='form-control'
-                  id='selectProduto'
-                  name='idProduto'
+                  className="form-control"
                   value={idProduto}
                   onChange={(e) => setIdProduto(Number(e.target.value))}
                 >
                   <option value={0}>Selecione...</option>
-                  {dadosProdutos.map((produto) => (
-                    <option key={produto.id} value={produto.id}>
-                      {`${produto.nome} - ${produto.cor} - ${produto.tamanho} - ${produto.genero}`}
-                    </option>
-                  ))}
+                  {dadosProdutos &&
+                    dadosProdutos.map((produto) => (
+
+                      <option key={produto.id} value={produto.id}>
+                        {produto.nome} - {produto.cor} - {produto.tamanho} - {produto.genero}
+                      </option>
+                    ))}
                 </select>
               </FormGroup>
 
@@ -271,41 +265,53 @@ function CadastrarPedido() {
                   id='inputQuantidade'
                   name='quantidade'
                   value={quantidade}
-                  onChange={(e) => setQuantidade(e.target.value)}
+                  onChange={(e) => setQuantidade(Number(e.target.value))}
                 />
               </FormGroup>
-
-              {/* Renderizar os itens de pedido */}
-              {itensPedido.length > 0 && (
-                <div>
-                  <h4>Itens do Pedido:</h4>
-                  <ul>
-                    {itensPedido.map((item, index) => (
-                      <li key={index}>
-                        {item.produto.nome} {item.produto.cor} {item.produto.tamanho} {item.produto.genero} - Quantidade: {item.quantidade} 
-                        <button
-                          onClick={() => removerItem(index)}
-                          type='button'
-                          className='btn btn-sm btn-danger'
-                          style={{ marginLeft: '10px' }}
-                        >
-                          Remover
-                        </button>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <Stack spacing={1} padding={1} direction='row'>
+                {/* Renderizar os itens de pedido */}
+                {itensPedido.length > 0 && (
+                  <div>
+                    <h4>Itens do Pedido:</h4>
+                    <ul>
+                      {itensPedido.map((item, index) => (
+                        <li key={index}>
+                          {item.produto.nome} {item.produto.cor} {item.produto.tamanho} {item.produto.genero} - Quantidade: {item.quantidade}
+                          <button
+                            onClick={() => removerItem(index)}
+                            type='button'
+                            className='btn btn-sm btn-danger'
+                            style={{ marginLeft: '10px' }}
+                          >
+                            Remover
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+              </Stack>
 
               <Stack spacing={1} padding={1} direction='row'>
                 <button onClick={adicionarItemPedido} type='button' className='btn btn-sm btn-success'>
                   Adicionar Item
                 </button>
               </Stack>
-
-              <button onClick={salvar} type='button' className='btn btn-success'>
-                Salvar
-              </button>
+              <FormGroup label='Valor Total: *' htmlFor='inputprecoTotal'>
+                <input
+                  type='number'
+                  className='form-control'
+                  id='inputprecoTotal'
+                  name='precoTotal'
+                  value={precoTotal}
+                  onChange={(e) => setPrecoTotal(e.target.value)}
+                />
+              </FormGroup>
+              <Stack spacing={1} padding={1} direction='row'>
+                <button onClick={salvar} type='button' className='btn btn-success'>
+                  Salvar
+                </button>
+              </Stack>
             </div>
           </div>
         </div>

@@ -98,6 +98,10 @@ useEffect(() => {
   }
 
  if (!dados) return null;
+ if (!dadosCores) return null;
+ if (!dadosTamanhos) return null;
+ if (!dadosGeneros) return null;
+ if (!dadosDepartamentos) return null;
 
   return (
     <div className='container'>

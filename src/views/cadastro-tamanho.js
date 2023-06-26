@@ -21,22 +21,22 @@ function CadastroTamanho(){
   const baseURL = `${BASE_URL}/tamanhos`;
   
   const [id, setId] = useState(0);
-  const [titulo, setTitulo] = useState('');
+  const [nomeTamanho, setNomeTamanho] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
   function inicializar() {
     if (idParam == null) {
       setId(0);
-      setTitulo('');
+      setNomeTamanho('');
     } else {
       setId(dados.id);
-      setTitulo(dados.titulo);
+      setNomeTamanho(dados.nomeTamanho);
     }
   }
 
   async function salvar() {
-    let data = { id, titulo };
+    let data = { id, nomeTamanho };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -44,7 +44,7 @@ function CadastroTamanho(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Tamanho ${titulo} cadastrado com sucesso!`);
+          mensagemSucesso(`Tamanho ${nomeTamanho} cadastrado com sucesso!`);
           navigate(`/listagem-tamanhos`);
         })
         .catch(function (error) {
@@ -56,7 +56,7 @@ function CadastroTamanho(){
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          mensagemSucesso(`Tamanho ${titulo} alterado com sucesso!`);
+          mensagemSucesso(`Tamanho ${nomeTamanho} alterado com sucesso!`);
           navigate(`/listagem-tamanhos`);
         })
         .catch(function (error) {
@@ -74,7 +74,7 @@ function CadastroTamanho(){
       setDados(response.data);
     });
     setId(dados.id);
-    setTitulo(dados.titulo);
+    setNomeTamanho(dados.nomeTamanho);
   }
 
  if (!dados) return null;
@@ -85,14 +85,14 @@ function CadastroTamanho(){
           <div className='row'>
             <div className='col-lg-12'>
               <div className='bs-component'>
-                <FormGroup label='Titulo: *' htmlFor='inputTitulo'>
+                <FormGroup label='Tamanho: *' htmlFor='inputnomeTamanho'>
                   <input
                     type='text'
-                    id='inputTitulo'
-                    value={titulo}
+                    id='inputnomeTamanho'
+                    value={nomeTamanho}
                     className='form-control'
-                    name='titulo'
-                    onChange={(e) => setTitulo(e.target.value)}
+                    name='nomeTamanho'
+                    onChange={(e) => setNomeTamanho(e.target.value)}
                   />
                 </FormGroup>
 

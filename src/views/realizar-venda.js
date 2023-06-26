@@ -19,11 +19,12 @@ function RealizarVenda() {
   const baseURL = `${BASE_URL}/vendas`;
 
   const [id, setId] = useState(0);
-  const [valorTotal, setValorTotal] = useState(0);
+  const [precoTotal, setPrecoTotal] = useState(0);
   const [idFuncionario, setIdFuncionario] = useState(0);
   const [idCliente, setIdCliente] = useState(0);
   const [idMetodoPagamento, setIdMetodoPagamento] = useState(0);
   const [idProduto, setIdProduto] = useState(0);
+
   const [quantidade, setQuantidade] = useState(0);
   const [itensVenda, setItensVenda] = useState([]);
 
@@ -68,18 +69,16 @@ function RealizarVenda() {
   function inicializar() {
     if (idParam == null) {
       setId(0);
-      setIdProduto(0);
       setIdFuncionario(0);
       setIdCliente(0);
       setIdMetodoPagamento(0);
-      setValorTotal(0);
+      setPrecoTotal(0);
     } else {
       setId(dados.id);
-      setIdProduto(dados.idProduto);
       setIdFuncionario(dados.idFuncionario);
       setIdCliente(dados.idCliente);
       setIdMetodoPagamento(dados.idMetodoPagamento);
-      setValorTotal(dados.valorTotal);
+      setPrecoTotal(dados.precoTotal);
     }
   }
 
@@ -114,9 +113,7 @@ function RealizarVenda() {
         produtos.map(async (produto) => {
           const corResponse = await axios.get(
             `${BASE_URL}/cores/${produto.idCor}`
-            
           );
-          
           const tamanhoResponse = await axios.get(
             `${BASE_URL}/tamanhos/${produto.idTamanho}`
           );
@@ -134,51 +131,59 @@ function RealizarVenda() {
           };
         })
       );
-  
       setDadosProdutos(produtosCompletos);
     });
   }
-  
 
   async function salvar() {
     const vendaData = {
       idFuncionario,
       idCliente,
       idMetodoPagamento,
-      valorTotal,
+      precoTotal,
     };
-
+    const data = JSON.stringify(vendaData);
     try {
-      const response = await axios.post(baseURL, vendaData);
+      const response = await axios.post(baseURL, data, {
+        headers: { 'Content-Type': 'application/json' },
+      });
       const vendaId = response.data.id;
-
+  
       const produtoVendaDataList = itensVenda.map((item) => ({
-        produto: item.produto,
-        venda: { id: vendaId },
+        idProduto: item.produto.id,
+        idVenda: vendaId,
         quantidade: item.quantidade,
       }));
-
-      await axios.post(`${BASE_URL}/produtoVenda/batch`, produtoVendaDataList);
-
+      for (const produtoVendaData of produtoVendaDataList) {
+        try {
+          await axios.post(`${BASE_URL}/produtos-venda`, produtoVendaData, {
+            headers: { 'Content-Type': 'application/json' },
+          });
+        } catch (error) {
+          mensagemErro(error.response.data);
+        }
+      }
+  
       mensagemSucesso('Venda realizada com sucesso!');
       navigate(`/listagem-vendas`);
     } catch (error) {
       mensagemErro(error.response.data);
     }
   }
+  
 
-  const calcularValorTotal = () => {
-    let total = 0;
+  const calcularprecoTotal = () => {
+    let total = 0.0;
 
     for (const item of itensVenda) {
       total += item.produto.precoUnitario * item.quantidade;
     }
 
-    setValorTotal(total);
+    setPrecoTotal(total);
   };
 
   useEffect(() => {
-    calcularValorTotal();
+    calcularprecoTotal();
   }, [itensVenda]);
 
   return (
@@ -245,7 +250,7 @@ function RealizarVenda() {
           <option value={0}>Selecione...</option>
           {dadosProdutos &&
             dadosProdutos.map((produto) => (
-              
+
               <option key={produto.id} value={produto.id}>
                 {produto.nome} - {produto.cor} - {produto.tamanho} - {produto.genero}
               </option>
@@ -262,6 +267,7 @@ function RealizarVenda() {
         />
       </FormGroup>
 
+      <Stack spacing={1} padding={1} direction='row'>
       <button
         className="btn btn-primary"
         onClick={adicionarItemVenda}
@@ -269,7 +275,8 @@ function RealizarVenda() {
       >
         Adicionar Item
       </button>
-
+      </Stack>
+      <Stack spacing={1} padding={1} direction='row'>
       {itensVenda.length > 0 && (
         <div>
           <h4>Itens da Venda:</h4>
@@ -277,15 +284,22 @@ function RealizarVenda() {
             {itensVenda.map((item, index) => (
               <li key={index}>
                 {item.produto.nome} {item.produto.cor} {item.produto.tamanho} {item.produto.genero}   - Quantidade: {item.quantidade}
-                <button onClick={() => removerItem(item)}>Remover</button>
+                <button
+                  onClick={() => removerItem(index)}
+                  type='button'
+                  className='btn btn-sm btn-danger'
+                  style={{ marginLeft: '10px' }}
+                >
+                  Remover
+                </button>
               </li>
             ))}
           </ul>
         </div>
       )}
-
-      <h4>Valor Total: {valorTotal}</h4>
-
+      </Stack>
+      <h4>Valor Total: {precoTotal}</h4>
+      <Stack spacing={1} padding={1} direction='row'>
       <button
         onClick={salvar}
         type="button"
@@ -293,14 +307,7 @@ function RealizarVenda() {
       >
         Realizar Venda
       </button>
-      <button
-        onClick={inicializar}
-        type="button"
-        className="btn btn-danger"
-      >
-        Cancelar
-      </button>
-
+      </Stack>
     </Card>
   );
 }
