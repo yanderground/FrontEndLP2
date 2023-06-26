@@ -4,6 +4,7 @@ import { Route, Routes, BrowserRouter } from 'react-router-dom';
 
 import ListagemPedidos from './views/listagem-pedidos';
 import CadastroPedido from './views/cadastro-pedido';
+import DetalhesPedido from './views/detalhes-pedido';
 
 import CadastroGerente from './views/cadastro-gerente';
 import CadastroFuncionario from './views/cadastro-funcionario';
@@ -27,8 +28,9 @@ import CadastroCor from './views/cadastro-cor';
 import ListagemDepartamentos from './views/listagem-departamentos';
 import CadastroDepartamento from './views/cadastro-departamento';
 
-import ListagemVendas from './views/listagem-vendas'
+import ListagemVendas from './views/listagem-vendas';
 import RealizarVenda from './views/realizar-venda';
+import DetalhesVenda from './views/detalhes-venda';
 
 import TelaLogin from './views/tela-login';
 import TelaInicio from './views/tela-inicio';
@@ -41,10 +43,12 @@ function Rotas(props) {
         <Route path='/cadastro-pedido/:idParam' element={<CadastroPedido />} />
         <Route path='/cadastro-pedido/' element={<CadastroPedido />} />
         <Route path='/listagem-pedidos' element={<ListagemPedidos />} />
+        <Route path='/detalhes-pedido/:idParam' element={<DetalhesPedido/>} />
 
         <Route path='/realizar-venda/:idParam' element={<RealizarVenda />} />
         <Route path='/realizar-venda' element={<RealizarVenda />} />
         <Route path='/listagem-vendas' element={<ListagemVendas/>} />
+        <Route path='/detalhes-venda/:idParam' element={<DetalhesVenda/>} />
 
         <Route path='/cadastro-produto/:idParam' element={<CadastroProduto />} />
         <Route path='/cadastro-produto/' element={<CadastroProduto />} />

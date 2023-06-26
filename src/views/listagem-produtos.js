@@ -70,12 +70,6 @@ useEffect(() => {
     });
   }, []);
   
-  function buscar(id){
-    let url = `${BASE_URL}/cores/${id}`;
-      axios.get(url).then((response) => {
-        return response.data.nomeCor
-      });
-  }
 
   async function excluir(id) {
     let data = JSON.stringify({ id });

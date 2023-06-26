@@ -36,6 +36,9 @@ function ListagemVendas() {
   const cadastrar = () => {
       navigate(`/realizar-venda`);
   };
+  const detalhes = (id) => {
+    navigate(`/detalhes-venda/${id}`);
+};
 
 //   const editar = (id) => {
 //       navigate(`/realizar-venda/${id}`);
@@ -110,7 +113,7 @@ function ListagemVendas() {
                       ))}</td>
                       <td>
                       <button
-                            onClick={() => excluir(dado.id)}
+                            onClick={() => detalhes(dado.id)}
                             type='button'
                             className="btn btn-primary"
                         >

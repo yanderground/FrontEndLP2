@@ -313,4 +313,3 @@ function RealizarVenda() {
 }
 
 export default RealizarVenda;
-

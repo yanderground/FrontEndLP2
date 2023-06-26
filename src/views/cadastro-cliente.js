@@ -29,6 +29,7 @@ function CadastroClientes(){
   const [uf, setUf] = useState('');
   const [cidade, setCidade] = useState('');
   const [logradouro, setLogradouro] = useState('');
+  const [bairro, setBairro] = useState('');
   const [numero, setNumero] = useState('');
   const [complemento, setComplemento] = useState('');
 
@@ -51,6 +52,7 @@ function CadastroClientes(){
       setLogradouro('');
       setNumero('');
       setComplemento('');
+      setBairro('');
     } else {
       setId(dados.id);
       setNome(dados.nome);
@@ -63,11 +65,12 @@ function CadastroClientes(){
       setLogradouro(dados.logradouro);
       setNumero(dados.numero);
       setComplemento(dados.complemento);
+      setBairro(dados.bairro);
     }
   }
 
   async function salvar() {
-    let data = { id, nome, cpf, email, telefone, cep, uf, cidade, logradouro, numero, complemento };
+    let data = { id, nome, cpf, email, telefone, cep, uf, cidade, logradouro, bairro, numero, complemento };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -111,6 +114,7 @@ function CadastroClientes(){
     setLogradouro(dados.logradouro);
     setNumero(dados.numero);
     setComplemento(dados.complemento);
+    setBairro(dados.bairro);
   }
 
  if (!dados) return null;
@@ -180,6 +184,45 @@ function CadastroClientes(){
                   />
                 </FormGroup>
 
+                <FormGroup label='Uf: *' htmlFor='inputUf'>
+                  <input
+                    type='text'
+                    id='inputUf'
+                    value={uf}
+                    className='form-control'
+                    name='Uf'
+                    onChange={(e) =>
+                      setUf( e.target.value )
+                    }
+                  />
+                </FormGroup>
+
+                <FormGroup label='Cidade: *' htmlFor='inputCidade'>
+                  <input
+                    type='text'
+                    id='inputCidade'
+                    value={cidade}
+                    className='form-control'
+                    name='cidade'
+                    onChange={(e) =>
+                      setCidade( e.target.value )
+                    }
+                  />
+                </FormGroup>
+
+                <FormGroup label='Bairro: *' htmlFor='inputBairro'>
+                  <input
+                    type='text'
+                    id='inputBairro'
+                    value={bairro}
+                    className='form-control'
+                    name='bairro'
+                    onChange={(e) =>
+                      setBairro( e.target.value )
+                    }
+                  />
+                  </FormGroup> 
+
                 <FormGroup label='Logradouro: *' htmlFor='inputLogradouro'>
                   <input
                     type='text'
@@ -192,7 +235,7 @@ function CadastroClientes(){
                     }
                   />
                 </FormGroup>
-
+              
                 <FormGroup label='Número: *' htmlFor='inputNumero'>
                   <input
                     type='number'
@@ -219,31 +262,6 @@ function CadastroClientes(){
                   />
                 </FormGroup>
 
-                <FormGroup label='Cidade: *' htmlFor='inputCidade'>
-                  <input
-                    type='text'
-                    id='inputCidade'
-                    value={cidade}
-                    className='form-control'
-                    name='cidade'
-                    onChange={(e) =>
-                      setCidade( e.target.value )
-                    }
-                  />
-                </FormGroup>
-
-                <FormGroup label='Uf: *' htmlFor='inputUf'>
-                  <input
-                    type='text'
-                    id='inputUf'
-                    value={uf}
-                    className='form-control'
-                    name='Uf'
-                    onChange={(e) =>
-                      setUf( e.target.value )
-                    }
-                  />
-                </FormGroup>
 
                 <Stack spacing={1} padding={1} direction='row'>
                   <button

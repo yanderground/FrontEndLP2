@@ -30,6 +30,9 @@ function ListagemPedidos() {
   const cadastrar = () => {
       navigate(`/cadastro-pedido`);
   };
+  const detalhes = (id) => {
+    navigate(`/detalhes-pedido/${id}`);
+};
 
 //   const editar = (id) => {
 //       navigate(`/realizar-Pedido/${id}`);
@@ -92,7 +95,7 @@ function ListagemPedidos() {
                       <td>{dado.dataEntrega}</td>
                       <td>
                         <button
-                            onClick={() => excluir(dado.id)}
+                            onClick={() => detalhes(dado.id)}
                             type='button'
                             className="btn btn-primary"
                         >
