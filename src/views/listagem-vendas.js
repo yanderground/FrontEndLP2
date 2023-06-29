@@ -1,18 +1,11 @@
 import React from 'react';
-
 import Card from '../components/card';
-
 import { mensagemSucesso, mensagemErro } from '../components/toastr';
-
 import '../custom.css';
-
 import { useNavigate } from 'react-router-dom';
-
 import Stack from '@mui/material/Stack';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-//import EditIcon from '@mui/icons-material/Edit';
-
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
@@ -39,10 +32,6 @@ function ListagemVendas() {
   const detalhes = (id) => {
     navigate(`/detalhes-venda/${id}`);
 };
-
-//   const editar = (id) => {
-//       navigate(`/realizar-venda/${id}`);
-//   };
 
   const [dados, setDados] = React.useState(null);
   const [dadosFuncionarios, setDadosFuncionarios] = React.useState(null);
@@ -106,10 +95,10 @@ function ListagemVendas() {
                       <td>R${dado.precoTotal}</td>
                       <td>{dado.dataVenda}</td>
                       <td>{dadosFuncionarios?.map((dadoFuncionario) => (
-                        (dado.idFuncionario == dadoFuncionario.id) ? dadoFuncionario.nome : null
+                        (dado.idFuncionario === dadoFuncionario.id) ? dadoFuncionario.nome : null
                       ))}</td>
                       <td>{dadosClientes?.map((dadoCliente) => (
-                        (dado.idCliente == dadoCliente.id) ? dadoCliente.nome : null
+                        (dado.idCliente === dadoCliente.id) ? dadoCliente.nome : null
                       ))}</td>
                       <td>
                       <button

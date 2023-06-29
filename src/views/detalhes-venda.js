@@ -27,13 +27,12 @@ function DetalhesVenda() {
     const [dadosClientes, setDadosClientes] = React.useState(null);
     const [dadosFuncionarios, setDadosFuncionarios] = React.useState(null);
     const [dadosProdutosVenda, setDadosProdutosVenda] = React.useState(null);
-    const [itensPedido, setItensPedido] = useState([]);
+    const [itensVenda, setItensVenda] = useState([]);
 
     const [id, setId] = useState(0);
-    const [dataPedido, setDataPedido] = useState(0);
-    const [dataEntrega, setDataEntrega] = useState(0);
-    const [idGerente, setIdGerente] = useState(0);
-    const [idFornecedor, setIdFornecedor] = useState(0);
+    const [dataVenda, setDataVenda] = useState(0);
+    const [idFuncionario, setIdFuncionario] = useState(0);
+    const [idCliente, setIdCliente] = useState(0);
     const [idProduto, setIdProduto] = useState(0);
     const [quantidade, setQuantidade] = useState(0);
     const [precoTotal, setPrecoTotal] = useState(0);
@@ -45,14 +44,11 @@ function DetalhesVenda() {
     }, []);
 
     function inicializar() {
-
         setId(dados.id);
         setIdFuncionario(dados.idFuncionario);
         setIdCliente(dados.idCliente);
         setPrecoTotal(dados.precoTotal);
-        setDataEntrega(dados.dataEntrega);
-        setDataPedido(dados.dataPedido);
-
+        setDataVenda(dados.dataVenda);
     }
 
     async function buscarProdutos() {
