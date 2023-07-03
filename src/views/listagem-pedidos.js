@@ -20,6 +20,8 @@ const baseURL = `${BASE_URL}/pedidos`;
 
 function ListagemPedidos() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
   React.useEffect(() => {
     axios.get(baseURL).then((response) => {
@@ -30,10 +32,6 @@ function ListagemPedidos() {
   const cadastrar = () => {
       navigate(`/cadastro-pedido`);
   };
-
-//   const editar = (id) => {
-//       navigate(`/realizar-Pedido/${id}`);
-//   };
 
   const [dados, setDados] = React.useState(null);
 

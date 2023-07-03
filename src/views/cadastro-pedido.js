@@ -15,12 +15,12 @@ import { BASE_URL } from '../config/axios';
 
 function CadastrarPedido() {
   const { idParam } = useParams();
-
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const navigate = useNavigate();
 
   const baseURL = `${BASE_URL}/pedidos`;
 
-  const [id, setId] = useState(0);
   const [dataPedido, setDataPedido] = useState(0);
   const [dataEntrega, setDataEntrega] = useState(0);
   const [idGerente, setIdGerente] = useState(0);
@@ -28,23 +28,23 @@ function CadastrarPedido() {
   const [idProduto, setIdProduto] = useState(0);
   const [quantidade, setQuantidade] = useState(0);
   const [precoTotal, setPrecoTotal] = useState(0);
-  const [dados, setDados] = useState([]);
+
+  const [dados] = useState([]);
   const [itensPedido, setItensPedido] = useState([]);
 
-  useEffect(() => {
-    inicializar();
+  const [dadosGerentes, setDadosGerentes] = useState(null);
+  const [dadosFornecedores, setDadosFornecedors] = useState(null);
+  const [dadosProdutos, setDadosProdutos] = useState(null);
 
-    if (idParam) {
-      buscar();
-    }
-    buscarGerentes();
-    buscarProdutos();
-    buscarFornecedores();
+  useEffect(() => {
+    inicializar(); // eslint-disable-next-line
+    buscarGerentes(); // eslint-disable-next-line
+    buscarProdutos(); // eslint-disable-next-line
+    buscarFornecedores(); // eslint-disable-next-line
   }, [idParam]);
 
   function inicializar() {
     if (idParam == null) {
-      setId(0);
       setIdGerente(0);
       setIdFornecedor(0);
       setPrecoTotal(0);
@@ -52,7 +52,6 @@ function CadastrarPedido() {
       setDataPedido('');
 
     } else {
-      setId(dados.id);
       setIdGerente(dados.idGerente);
       setIdFornecedor(dados.idFornecedor);
       setPrecoTotal(dados.precoTotal);
@@ -128,32 +127,17 @@ function CadastrarPedido() {
     }
   }
 
-
-  async function buscar() {
-    await axios.get(`${baseURL}/${idParam}`).then((response) => {
-      setDados(response.data);
-    });
-  }
-
-  const [dadosGerentes, setDadosGerentes] = React.useState(null);
-
-
   async function buscarGerentes() {
     axios.get(`${BASE_URL}/gerentes`).then((response) => {
       setDadosGerentes(response.data);
     });
   };
 
-  const [dadosFornecedores, setDadosFornecedors] = React.useState(null);
-
   async function buscarFornecedores() {
     axios.get(`${BASE_URL}/fornecedores`).then((response) => {
       setDadosFornecedors(response.data);
     });
   };
-
-  const [dadosProdutos, setDadosProdutos] = React.useState(null);
-
 
   if (!dados) return null;
   if (!dadosGerentes) return null;

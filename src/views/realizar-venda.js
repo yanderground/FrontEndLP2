@@ -17,8 +17,9 @@ function RealizarVenda() {
   const { idParam } = useParams();
   const navigate = useNavigate();
   const baseURL = `${BASE_URL}/vendas`;
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
-  const [id, setId] = useState(0);
   const [precoTotal, setPrecoTotal] = useState(0);
   const [idFuncionario, setIdFuncionario] = useState(0);
   const [idCliente, setIdCliente] = useState(0);
@@ -28,11 +29,11 @@ function RealizarVenda() {
   const [quantidade, setQuantidade] = useState(0);
   const [itensVenda, setItensVenda] = useState([]);
 
-  const [dados, setDados] = React.useState([]);
-  const [dadosFuncionarios, setDadosFuncionarios] = React.useState(null);
-  const [dadosClientes, setDadosClientes] = React.useState(null);
-  const [dadosMetodoPagamentos, setDadosMetodoPagamentos] = React.useState(null);
-  const [dadosProdutos, setDadosProdutos] = React.useState(null);
+  const [dados] = useState([]);
+  const [dadosFuncionarios, setDadosFuncionarios] = useState(null);
+  const [dadosClientes, setDadosClientes] = useState(null);
+  const [dadosMetodoPagamentos, setDadosMetodoPagamentos] = useState(null);
+  const [dadosProdutos, setDadosProdutos] = useState(null);
 
   const adicionarItemVenda = () => {
     const itemSelecionado = dadosProdutos.find((dado) => dado.id === idProduto);
@@ -54,38 +55,25 @@ function RealizarVenda() {
   };
 
   useEffect(() => {
-    inicializar();
-
-    if (idParam) {
-      buscar();
-    }
-
-    buscarFuncionarios();
-    buscarClientes();
-    buscarMetodoPagamentos();
-    buscarProdutos();
-  }, [idParam]);
+    inicializar(); // eslint-disable-next-line
+    buscarFuncionarios(); // eslint-disable-next-line
+    buscarClientes(); // eslint-disable-next-line
+    buscarMetodoPagamentos(); // eslint-disable-next-line
+    buscarProdutos(); // eslint-disable-next-line
+  }, [idParam]); 
 
   function inicializar() {
-    if (idParam == null) {
-      setId(0);
+    if (idParam == null) { 
       setIdFuncionario(0);
       setIdCliente(0);
       setIdMetodoPagamento(0);
       setPrecoTotal(0);
     } else {
-      setId(dados.id);
       setIdFuncionario(dados.idFuncionario);
       setIdCliente(dados.idCliente);
       setIdMetodoPagamento(dados.idMetodoPagamento);
       setPrecoTotal(dados.precoTotal);
     }
-  }
-
-  async function buscar() {
-    await axios.get(`${baseURL}/${idParam}`).then((response) => {
-      setDados(response.data);
-    });
   }
 
   async function buscarFuncionarios() {
@@ -183,7 +171,7 @@ function RealizarVenda() {
   };
 
   useEffect(() => {
-    calcularprecoTotal();
+    calcularprecoTotal();// eslint-disable-next-line
   }, [itensVenda]);
 
   return (

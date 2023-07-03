@@ -20,6 +20,8 @@ const baseURL = `${BASE_URL}/vendas`;
 
 function ListagemVendas() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
   React.useEffect(() => {
     axios.get(baseURL).then((response) => {
@@ -36,10 +38,6 @@ function ListagemVendas() {
   const cadastrar = () => {
       navigate(`/realizar-venda`);
   };
-
-//   const editar = (id) => {
-//       navigate(`/realizar-venda/${id}`);
-//   };
 
   const [dados, setDados] = React.useState(null);
   const [dadosFuncionarios, setDadosFuncionarios] = React.useState(null);
@@ -103,10 +101,10 @@ function ListagemVendas() {
                       <td>R${dado.precoTotal}</td>
                       <td>{dado.dataVenda}</td>
                       <td>{dadosFuncionarios?.map((dadoFuncionario) => (
-                        (dado.idFuncionario == dadoFuncionario.id) ? dadoFuncionario.nome : null
+                        (dado.idFuncionario === dadoFuncionario.id) ? dadoFuncionario.nome : null
                       ))}</td>
                       <td>{dadosClientes?.map((dadoCliente) => (
-                        (dado.idCliente == dadoCliente.id) ? dadoCliente.nome : null
+                        (dado.idCliente === dadoCliente.id) ? dadoCliente.nome : null
                       ))}</td>
                       <td>
                       <button

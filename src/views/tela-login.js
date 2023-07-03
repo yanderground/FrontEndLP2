@@ -17,9 +17,9 @@ function TelaLogin() {
   async function logar() {
     let data = { login, senha };
     data = JSON.stringify(data);
-    const baseURL = `${BASE_URL}/auth`
+    const baseURL = `${BASE_URL}/usuarios`
     await axios
-        .post(baseURL, data, {
+        .post(`${baseURL}/auth`, data, {
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {

@@ -15,7 +15,8 @@ import { BASE_URL } from '../config/axios';
 
 function CadastroTamanho(){
   const { idParam } = useParams();
-
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const navigate = useNavigate();
 
   const baseURL = `${BASE_URL}/tamanhos`;

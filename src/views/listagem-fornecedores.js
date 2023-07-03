@@ -20,7 +20,9 @@ const baseURL = `${BASE_URL}/fornecedores`;
 
 function ListagemFornecedores() {
   const navigate = useNavigate();
-
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  
   const cadastrar = () => {
     navigate(`/cadastro-fornecedor`);
   };

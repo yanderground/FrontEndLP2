@@ -21,7 +21,8 @@ const baseURL2 = `${BASE_URL}/gerentes`;
 
 function ListagemFuncionarios() {
   const navigate = useNavigate();
-
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   
   const [dados, setDados] = React.useState(null);
   const [dados2, setDados2] = React.useState(null);
@@ -51,7 +52,6 @@ function ListagemFuncionarios() {
     }
 
   };
-
 
   async function excluir(id,i) {
     let data = JSON.stringify({ id });

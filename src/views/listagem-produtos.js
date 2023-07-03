@@ -20,12 +20,14 @@ const baseURL = `${BASE_URL}/produtos`;
 
 function ListagemProdutos() {
   const navigate = useNavigate();
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   
-  const [dados, setDados] = React.useState(null);
-  const [dadosDepartamentos, setDadosDepartamentos] = React.useState(null);
-  const [dadosGeneros, setDadosGeneros] = React.useState(null);
-  const [dadosTamanhos, setDadosTamanhos] = React.useState(null);
-  const [dadosCores, setDadosCores] = React.useState('');
+  const [dados, setDados] = useState(null);
+  const [dadosDepartamentos, setDadosDepartamentos] = useState(null);
+  const [dadosGeneros, setDadosGeneros] = useState(null);
+  const [dadosTamanhos, setDadosTamanhos] = useState(null);
+  const [dadosCores, setDadosCores] = useState('');
 
 useEffect(() => {
     axios.get(baseURL).then((response) => {
@@ -54,7 +56,6 @@ useEffect(() => {
     navigate(`/listagem-tamanhos`);
   };
   
-  
   React.useEffect(() => {
     axios.get(`${BASE_URL}/departamentos`).then((response) => {
       setDadosDepartamentos(response.data);
@@ -69,13 +70,6 @@ useEffect(() => {
       setDadosCores(response.data);
     });
   }, []);
-  
-  function buscar(id){
-    let url = `${BASE_URL}/cores/${id}`;
-      axios.get(url).then((response) => {
-        return response.data.nomeCor
-      });
-  }
 
   async function excluir(id) {
     let data = JSON.stringify({ id });
@@ -135,17 +129,17 @@ useEffect(() => {
                       <td>{dado.nome}</td>
                       <td>R${dado.precoUnitario}</td>
                       <td>{dadosCores?.map((dadoCor) => (
-                        (dado.idCor == dadoCor.id) ? dadoCor.nomeCor : null
+                        (dado.idCor === dadoCor.id) ? dadoCor.nomeCor : null
                       ))}</td>
                       <td>{dadosTamanhos?.map((dadoTamanho) => (
-                        (dado.idTamanho == dadoTamanho.id) ? dadoTamanho.nomeTamanho : null
+                        (dado.idTamanho === dadoTamanho.id) ? dadoTamanho.nomeTamanho : null
                       ))}</td>
                       <td>{dado.quantidade}</td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
                           <IconButton
                             aria-label='edit'
-                            onClick={() => editar(dado.id)}
+                           onClick={() => editar(dado.id)}
                           >
                             <EditIcon />
                           </IconButton>

@@ -20,7 +20,9 @@ const baseURL = `${BASE_URL}/cores`;
 
 function ListagemCores() {
   const navigate = useNavigate();
-
+  const token = localStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  
   React.useEffect(() => {
     axios.get(baseURL).then((response) => {
       setDados(response.data);

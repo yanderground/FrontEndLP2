@@ -1,13 +1,14 @@
 import { useNavigate} from 'react-router-dom';
 
+import axios from 'axios';
 import React from 'react';
-
 import Card from '../components/card';
-
 import "../styles.css";
 
 function TelaInicio() {
     const navigate = useNavigate();
+    const token = localStorage.getItem('token');
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
     const navegarFunc = () => {
         navigate(`/listagem-funcionarios`);
     };
