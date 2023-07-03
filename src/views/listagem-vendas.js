@@ -1,18 +1,11 @@
 import React from 'react';
-
 import Card from '../components/card';
-
 import { mensagemSucesso, mensagemErro } from '../components/toastr';
-
 import '../custom.css';
-
 import { useNavigate } from 'react-router-dom';
-
 import Stack from '@mui/material/Stack';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-//import EditIcon from '@mui/icons-material/Edit';
-
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
@@ -38,6 +31,11 @@ function ListagemVendas() {
   const cadastrar = () => {
       navigate(`/realizar-venda`);
   };
+
+  const detalhes = (id) => {
+    navigate(`/detalhes-venda/${id}`);
+};
+
 
   const [dados, setDados] = React.useState(null);
   const [dadosFuncionarios, setDadosFuncionarios] = React.useState(null);
@@ -108,7 +106,7 @@ function ListagemVendas() {
                       ))}</td>
                       <td>
                       <button
-                            onClick={() => excluir(dado.id)}
+                            onClick={() => detalhes(dado.id)}
                             type='button'
                             className="btn btn-primary"
                         >

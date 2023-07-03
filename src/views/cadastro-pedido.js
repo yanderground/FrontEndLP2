@@ -107,7 +107,9 @@ function CadastrarPedido() {
       const pedidoProdutoDataList = itensPedido.map((item) => ({
         idProduto: item.produto.id,
         idPedido: pedidoId,
-        quantidade: item.quantidade,
+        //if(item.produto.quantidadeMin <= item.quantidade && item.produto.quantidadeMax >= item.quantidade){
+          quantidade: item.quantidade,
+        //}
       }));
       for (const pedidoProdutoData of pedidoProdutoDataList) {
         try {

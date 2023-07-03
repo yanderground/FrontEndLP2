@@ -32,6 +32,7 @@ function CadastroGerente(){
   const [logradouro, setLogradouro] = useState('');
   const [numero, setNumero] = useState('');
   const [complemento, setComplemento] = useState('');
+  const [bairro, setBairro] = useState('');
 
   const [dados, setDados] = React.useState([]);
 
@@ -52,6 +53,7 @@ function CadastroGerente(){
       setLogradouro('');
       setNumero('');
       setComplemento('');
+      setBairro('');
     } else {
       setId(dados.id);
       setNome(dados.nome);
@@ -64,11 +66,12 @@ function CadastroGerente(){
       setLogradouro(dados.logradouro);
       setNumero(dados.numero);
       setComplemento(dados.complemento);
+      setBairro(dados.bairro);
     }
   }
 
   async function salvar() {
-    let data = { id, nome, cpf, email, telefone, cep, uf, cidade, logradouro, numero, complemento };
+    let data = { id, nome, cpf, email, telefone, cep, uf, cidade, logradouro, numero, bairro, complemento };
     data = JSON.stringify(data);
     if (idParam == null) {
       await axios
@@ -114,6 +117,7 @@ function CadastroGerente(){
     setLogradouro(dados.logradouro);
     setNumero(dados.numero);
     setComplemento(dados.complemento);
+    setBairro(dados.bairro);
   }
 
  if (!dados) return null;
@@ -183,6 +187,45 @@ function CadastroGerente(){
                   />
                 </FormGroup>
 
+                <FormGroup label='Uf: *' htmlFor='inputUf'>
+                  <input
+                    type='text'
+                    id='inputUf'
+                    value={uf}
+                    className='form-control'
+                    name='Uf'
+                    onChange={(e) =>
+                      setUf( e.target.value )
+                    }
+                  />
+                </FormGroup>
+
+                <FormGroup label='Cidade: *' htmlFor='inputCidade'>
+                  <input
+                    type='text'
+                    id='inputCidade'
+                    value={cidade}
+                    className='form-control'
+                    name='cidade'
+                    onChange={(e) =>
+                      setCidade( e.target.value )
+                    }
+                  />
+                </FormGroup>
+
+                <FormGroup label='Bairro: *' htmlFor='inputBairro'>
+                  <input
+                    type='text'
+                    id='inputBairro'
+                    value={bairro}
+                    className='form-control'
+                    name='bairro'
+                    onChange={(e) =>
+                      setBairro( e.target.value )
+                    }
+                  />
+                  </FormGroup> 
+
                 <FormGroup label='Logradouro: *' htmlFor='inputLogradouro'>
                   <input
                     type='text'
@@ -195,7 +238,7 @@ function CadastroGerente(){
                     }
                   />
                 </FormGroup>
-
+              
                 <FormGroup label='Número: *' htmlFor='inputNumero'>
                   <input
                     type='number'
@@ -218,32 +261,6 @@ function CadastroGerente(){
                     name='complemento'
                     onChange={(e) =>
                       setComplemento( e.target.value )
-                    }
-                  />
-                </FormGroup>
-
-                <FormGroup label='Cidade: *' htmlFor='inputCidade'>
-                  <input
-                    type='text'
-                    id='inputCidade'
-                    value={cidade}
-                    className='form-control'
-                    name='cidade'
-                    onChange={(e) =>
-                      setCidade( e.target.value )
-                    }
-                  />
-                </FormGroup>
-
-                <FormGroup label='uf: *' htmlFor='inputuf'>
-                  <input
-                    type='text'
-                    id='inputuf'
-                    value={uf}
-                    className='form-control'
-                    name='uf'
-                    onChange={(e) =>
-                      setUf( e.target.value )
                     }
                   />
                 </FormGroup>
