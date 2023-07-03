@@ -1,9 +1,8 @@
 import React from 'react';
-import 'bootswatch/dist/flatly/bootstrap.css';
+import 'bootswatch/dist/morph/bootstrap.css';
 import './custom.css';
 import 'toastr/build/toastr.min';
 import 'toastr/build/toastr.css';
-import Navbar from './components/navbar.js';
 import Rotas from './rotas.js';
 
 
@@ -13,7 +12,6 @@ class App extends React.Component {
 
        <div className='container'>
         <Rotas />
-        <Navbar />
       </div>
     );
   }

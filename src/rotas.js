@@ -1,6 +1,7 @@
 import React from 'react';
 
 import { Route, Routes, BrowserRouter } from 'react-router-dom';
+import Navbar from './components/navbar';
 
 import ListagemPedidos from './views/listagem-pedidos';
 import CadastroPedido from './views/cadastro-pedido';
@@ -35,8 +36,11 @@ import TelaInicio from './views/tela-inicio';
 
 
 function Rotas(props) {
+
+  const isLoginPage = window.location.pathname === '/';
   return (
     <BrowserRouter>
+      {!isLoginPage && <Navbar />}
       <Routes>
         <Route path='/cadastro-pedido/:idParam' element={<CadastroPedido />} />
         <Route path='/cadastro-pedido/' element={<CadastroPedido />} />
