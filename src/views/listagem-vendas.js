@@ -8,12 +8,13 @@ import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
+import { format } from 'date-fns';
 
 const baseURL = `${BASE_URL}/vendas`;
 
 function ListagemVendas() {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
   React.useEffect(() => {
@@ -97,7 +98,7 @@ function ListagemVendas() {
                     <tr key={dado.id}>
                       <td>Venda: {dado.id}</td>
                       <td>R${dado.precoTotal}</td>
-                      <td>{dado.dataVenda}</td>
+                      <td>{format(new Date(dado.dataVenda), 'dd/MM/yyyy')}</td>
                       <td>{dadosFuncionarios?.map((dadoFuncionario) => (
                         (dado.idFuncionario === dadoFuncionario.id) ? dadoFuncionario.nome : null
                       ))}</td>

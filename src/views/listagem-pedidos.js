@@ -1,18 +1,12 @@
 import React from 'react';
-
 import Card from '../components/card';
-
 import { mensagemSucesso, mensagemErro } from '../components/toastr';
-
 import '../custom.css';
-
 import { useNavigate } from 'react-router-dom';
-
 import Stack from '@mui/material/Stack';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-//import EditIcon from '@mui/icons-material/Edit';
-
+import { format } from 'date-fns';
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
 
@@ -20,7 +14,7 @@ const baseURL = `${BASE_URL}/pedidos`;
 
 function ListagemPedidos() {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
   React.useEffect(() => {
@@ -89,8 +83,8 @@ function ListagemPedidos() {
                   {dados.map((dado) => (
                     <tr key={dado.id}>
                       <td>Pedido: {dado.id}</td>
-                      <td>{dado.dataPedido}</td>
-                      <td>{dado.dataEntrega}</td>
+                      <td>{format(new Date(dado.dataPedido), 'dd/MM/yyyy')}</td>
+                      <td>{format(new Date(dado.dataEntrega), 'dd/MM/yyyy')}</td>
                       <td>
                         <button
                             onClick={() => detalhes(dado.id)}
@@ -102,12 +96,6 @@ function ListagemPedidos() {
                       </td>
                       <td>
                         <Stack spacing={1} padding={0} direction='row'>
-                          {/* <IconButton
-                            aria-label='edit'
-                            onClick={() => editar(dado.id)}
-                          >
-                            <EditIcon />
-                          </IconButton> */}
                           <IconButton
                             aria-label='delete'
                             onClick={() => excluir(dado.id)}

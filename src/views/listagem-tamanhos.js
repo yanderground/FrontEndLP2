@@ -20,7 +20,7 @@ const baseURL = `${BASE_URL}/tamanhos`;
 
 function ListagemTamanhos() {
   const navigate = useNavigate();
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
   React.useEffect(() => {

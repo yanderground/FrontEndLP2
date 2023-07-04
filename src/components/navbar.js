@@ -1,20 +1,22 @@
 import React from 'react';
-import 'bootswatch/dist/flatly/bootstrap.css';
-
-
+import 'bootswatch/dist/slate/bootstrap.css';
+import { useLocation } from 'react-router-dom';
 import NavbarItem from './navbarItem';
 
-
 function Navbar(props) {
+  const location = useLocation();
+
+  const isLoginPage = location.pathname === '/';
+
+  if (isLoginPage) {
+    return null; 
+  }
 
   return (
-
     <div className='navbar navbar-expand-lg fixed-top navbar-dark bg-primary'>
-      
       <div className='container'>
-      
         <a href='/tela-inicio' className='navbar-brand'>
-          Grenciador de Vendas
+          Gerenciador de Vendas
         </a>
         <button
           className='navbar-toggler'
@@ -27,8 +29,6 @@ function Navbar(props) {
         >
           <span className='navbar-toggler-icon'></span>
         </button>
-
-        
 
         <div className='collapse navbar-collapse' id='navbarResponsive'>
           <ul className='navbar-nav'>
@@ -57,29 +57,14 @@ function Navbar(props) {
               href='/listagem-clientes'
               label='Clientes'
             />
-              <NavbarItem
+            <NavbarItem
               render='true'
               href='/listagem-pedidos'
               label='Pedidos'
             />
-            {/* <NavbarItem
-              render='true'
-              href='/listagem-tamanhos'
-              label='Tamanhos'
-            />
-            <NavbarItem
-              render='true'
-              href='/listagem-cores'
-              label='Cores'
-            />
-            <NavbarItem
-              render='true'
-              href='/listagem-departamentos'
-              label='Departamentos'
-            /> */}
           </ul>
-        </div> 
-        <a href='/'><button type="button" className="btn btn-danger" >Sair</button></a> 
+        </div>
+        <a href='/'><button type="button" className="btn btn-danger" >Sair</button></a>
       </div>
     </div>
   );

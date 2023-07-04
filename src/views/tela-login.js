@@ -23,7 +23,7 @@ function TelaLogin() {
           headers: { 'Content-Type': 'application/json' },
         })
         .then(function (response) {
-          localStorage.setItem('token', response);
+          sessionStorage.setItem('token', response.data.token);
           mensagemSucesso(`Usuário ${login} logado com sucesso!`);
           navigate(`/tela-inicio`);
         })

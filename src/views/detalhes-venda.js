@@ -1,118 +1,125 @@
 import React, { useState, useEffect } from 'react';
-
 import Card from '../components/card';
-
-import { mensagemSucesso, mensagemErro } from '../components/toastr';
-
 import '../custom.css';
-
 import { useNavigate, useParams } from 'react-router-dom';
-
-import Stack from '@mui/material/Stack';
-import { IconButton } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-//import EditIcon from '@mui/icons-material/Edit';
-
 import axios from 'axios';
 import { BASE_URL } from '../config/axios';
+import { format } from 'date-fns';
 
 const baseURL = `${BASE_URL}/vendas`;
 
 function DetalhesVenda() {
-    const navigate = useNavigate();
-    const { idParam } = useParams();
+  const navigate = useNavigate();
+  const { idParam } = useParams();
+  const token = sessionStorage.getItem('token');
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  const [dados, setDados] = useState(null);
+  const [produtosVenda, setProdutosVenda] = useState(null);
+  const [produtos, setProdutos] = useState(null);
+  const [clientes, setClientes] = useState(null);
+  const [funcionarios, setFuncionarios] = useState(null);
+  const [metodosPagamento, setMetodosPagamento] = useState(null);
+  const [cores, setCores] = useState(null);
+  const [tamanhos, setTamanhos] = useState(null);
+  const [generos, setGeneros] = useState(null);
 
-    const [dados, setDados] = React.useState(null);
-    const [dadosProdutos, setDadosProdutos] = React.useState(null);
-    const [dadosClientes, setDadosClientes] = React.useState(null);
-    const [dadosFuncionarios, setDadosFuncionarios] = React.useState(null);
-    const [dadosProdutosVenda, setDadosProdutosVenda] = React.useState(null);
-    const [itensVenda, setItensVenda] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const [vendaResponse, produtosVendaResponse, produtosResponse, clientesResponse, funcionariosResponse, metodosPagamentoResponse, coresResponse, tamanhosResponse, generosResponse] = await Promise.all([
+        axios.get(`${baseURL}/${idParam}`),
+        axios.get(`${BASE_URL}/produtos-venda/vendas/${idParam}`),
+        axios.get(`${BASE_URL}/produtos`),
+        axios.get(`${BASE_URL}/clientes`),
+        axios.get(`${BASE_URL}/funcionarios`),
+        axios.get(`${BASE_URL}/metodos-pagamento`),
+        axios.get(`${BASE_URL}/cores`),
+        axios.get(`${BASE_URL}/tamanhos`),
+        axios.get(`${BASE_URL}/generos`),
+      ]);
 
-    const [id, setId] = useState(0);
-    const [dataVenda, setDataVenda] = useState(0);
-    const [idFuncionario, setIdFuncionario] = useState(0);
-    const [idCliente, setIdCliente] = useState(0);
-    const [idProduto, setIdProduto] = useState(0);
-    const [quantidade, setQuantidade] = useState(0);
-    const [precoTotal, setPrecoTotal] = useState(0);
+      setDados(vendaResponse.data);
+      setProdutosVenda(produtosVendaResponse.data);
+      setProdutos(produtosResponse.data);
+      setClientes(clientesResponse.data);
+      setFuncionarios(funcionariosResponse.data);
+      setMetodosPagamento(metodosPagamentoResponse.data);
+      setCores(coresResponse.data);
+      setTamanhos(tamanhosResponse.data);
+      setGeneros(generosResponse.data);
+    };
 
-    useEffect(() => {
-        axios.get(`${baseURL}/${idParam}`).then((response) => {
-            setDados(response.data);
-        });
-    }, []);
+    fetchData();
+  }, [idParam]);
 
-    function inicializar() {
-        setId(dados.id);
-        setIdFuncionario(dados.idFuncionario);
-        setIdCliente(dados.idCliente);
-        setPrecoTotal(dados.precoTotal);
-        setDataVenda(dados.dataVenda);
-    }
+  if (!dados || !produtosVenda || !produtos || !clientes || !funcionarios || !metodosPagamento || !cores || !tamanhos || !generos) return null;
 
-    async function buscarProdutos() {
-        await axios.get(`${BASE_URL}/produtos`).then(async (response) => {
-            const produtos = response.data;
-            const produtosCompletos = await Promise.all(
-                produtos.map(async (produto) => {
-                    const corResponse = await axios.get(
-                        `${BASE_URL}/cores/${produto.idCor}`
+  return (
+    <div className='container'>
+      <Card title='Detalhes da Venda'>
+        <div className='row'>
+          <div className='col-lg-12'>
+            <div className='bs-component'>
+              <table className='table table-hover'>
+                <thead>
+                  <tr>
+                    <th scope='col'>Venda</th>
+                    <th scope='col'>Data Venda</th>
+                    <th scope='col'>Preço Total</th>
+                    <th scope='col'>Funcionário</th>
+                    <th scope='col'>Cliente</th>
+                    <th scope='col'>Método de Pagamento</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr key={dados.id}>
+                    <td>Venda: {dados.id}</td>
+                    <td>{format(new Date(dados.dataVenda), 'dd/MM/yyyy')}</td>
+                    <td>R${dados.precoTotal}</td>
+                    <td>{funcionarios.find((funcionario) => funcionario.id === dados.idFuncionario)?.nome}</td>
+                    <td>{clientes.find((cliente) => cliente.id === dados.idCliente)?.nome}</td>
+                    <td>{metodosPagamento.find((metodoPagamento) => metodoPagamento.id === dados.idMetodoPagamento)?.nomeMetodoPagamento}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <h5>Produtos da Venda:</h5>
+              <table className='table table-hover'>
+                <thead>
+                  <tr>
+                    <th scope='col'>Produto</th>
+                    <th scope='col'>Cor</th>
+                    <th scope='col'>Tamanho</th>
+                    <th scope='col'>Gênero</th>
+                    <th scope='col'>Quantidade</th>
+                    <th scope='col'>Preço Unitário</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {produtosVenda.map((produtoVenda) => {
+                    const produto = produtos.find((produto) => String(produto.id) === String(produtoVenda.produto.id));
+                    const cor =  produto ? cores.find((cor) => cor.id === produto.idCor): null;
+                    const tamanho = produto ? tamanhos.find((tamanho) => tamanho.id === produto.idTamanho): null;
+                    const genero = produto ? generos.find((genero) => genero.id === produto.idGenero): null;
+
+                    return (
+                      <tr key={produtoVenda.id}>
+                        <td>{produto?.nome}</td>
+                        <td>{cor?.nomeCor}</td>
+                        <td>{tamanho?.nomeTamanho}</td>
+                        <td>{genero?.nomeGenero}</td>
+                        <td>{produtoVenda.quantidade}</td>
+                        <td>R${produto.precoUnitario}</td>
+                      </tr>
                     );
-                    const tamanhoResponse = await axios.get(
-                        `${BASE_URL}/tamanhos/${produto.idTamanho}`
-                    );
-                    const generoResponse = await axios.get(
-                        `${BASE_URL}/generos/${produto.idGenero}`
-                    );
-                    const cor = corResponse.data.nomeCor;
-                    const tamanho = tamanhoResponse.data.nomeTamanho;
-                    const genero = generoResponse.data.nomeGenero;
-                    return {
-                        ...produto,
-                        cor,
-                        tamanho,
-                        genero,
-                    };
-                })
-            );
-
-            setDadosProdutos(produtosCompletos);
-        });
-    }
-
-    if (!dados) return null;
-    if (!dadosProdutos) return null;
-    if (!dadosProdutosVenda) return null;
-
-    return (
-        <div className='container'>
-            <Card title='Detalhes do Venda'>
-                <div className='row'>
-                    <div className='col-lg-12'>
-                        <div className='bs-component'>
-                            <table className='table table-hover'>
-                                <thead>
-                                    <tr>
-                                        <th scope='col'>Venda</th>
-                                        <th scope='col'>Data Venda</th>
-                                        <th scope='col'>Valor Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr key={id}>
-                                        <td>Venda: {id}</td>
-                                        <td>{dataVenda}</td>
-                                        <td>R${precoTotal}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </Card>
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
-    );
+      </Card>
+    </div>
+  );
 }
 
 export default DetalhesVenda;

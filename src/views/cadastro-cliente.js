@@ -15,7 +15,7 @@ import { BASE_URL } from '../config/axios';
 
 function CadastroClientes(){
   const { idParam } = useParams();
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
   const navigate = useNavigate();
 
